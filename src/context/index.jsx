@@ -53,7 +53,6 @@ export function GlobalContextProvider({ children }) {
 
         const fetchData = async () => {
             const res = await userServices.getProfile();
-            console.log(res);
             const data = res.data;
             if (data) {
                 dispatch(initialize({isAuthenticated: true, user: data}));

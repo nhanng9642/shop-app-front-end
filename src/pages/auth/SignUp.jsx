@@ -4,10 +4,30 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
+import { userServices } from "../../utils";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 export function SignUp() {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    const res = await userServices.signup(data);
+    console.log(res)
+
+    if (res.status === 'success') {
+        toast.success('Sign up successfully!')
+        navigate('/auth/sign-in');
+    } else {
+        setError(res.message);
+    }
+}
+
   return (
     <section className="flex bg-gray-100 h-screen">
       <div className="w-1/3 bg-white flex flex-col rounded-lg shadow-lg h-fit
@@ -18,20 +38,24 @@ export function SignUp() {
           </Typography>
         </div>
 
-        <form className="mt-4 mb-2 mx-auto w-full">
+        <form onSubmit={handleSubmit(onSubmit)}
+          className="mt-4 mb-2 mx-auto w-full">
           <div className="mb-3 flex flex-col gap-6">
             <Typography variant="small" color="blue-gray"
               className="-mb-5 font-medium">
               Full Name
             </Typography>
-            <Input
-              size="sm"
-              placeholder="Your Name"
+            <Input {...register('name', {
+              required: 'Please enter your full name',
+            })}
+              placeholder="Your Name" autoFocus
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />
+
+            {errors.name && <ErrorMessage mess={errors.name.message} />}
           </div>
 
           <div className="mb-1 flex flex-col gap-6">
@@ -39,14 +63,18 @@ export function SignUp() {
               className="-mb-5 font-medium">
               Email
             </Typography>
-            <Input
-              size="sm"
+            <Input onFocus={() => setError(false)}
+              {...register('email', {
+                required: 'Please enter your email',
+              })}
               placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />
+            {errors.email && <ErrorMessage mess={errors.email.message} />}
+            {error && <ErrorMessage mess={error} />}
           </div>
 
           <div className="mb-1 flex flex-col gap-6 mt-4">
@@ -54,14 +82,16 @@ export function SignUp() {
               className="-mb-5 font-medium">
               Password
             </Typography>
-            <Input
-              size="sm"
+            <Input {...register('password', {
+              required: 'Please enter your password',
+            })}
               type="password"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />
+            {errors.password && <ErrorMessage mess={errors.password.message} />}
           </div>
 
           <div className="mb-1 flex flex-col gap-6 mt-4">
@@ -70,15 +100,31 @@ export function SignUp() {
               Confirm Password
             </Typography>
             <Input
-              size="sm"
+              {...register("confirm_password", {
+                required: "Please confirm your password",
+                validate: (val) => {
+                  if (watch('password') != val) {
+                    return "Your passwords do no match";
+                  }
+                },
+              })}
               type="password"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />
+            {errors.confirm_password && <ErrorMessage mess={errors.confirm_password.message} />}
           </div>
+
+          <div className="mt-2">
+          </div>
+
           <Checkbox
+            {...register('agree', {
+              required: 'Please agree to our terms and conditions',
+            })
+            }
             label={
               <Typography
                 variant="small"
@@ -86,8 +132,7 @@ export function SignUp() {
                 className="flex items-center justify-start font-medium"
               >
                 I agree the&nbsp;
-                <a
-                  href="#"
+                <a href="#"
                   className="font-normal text-black transition-colors hover:text-gray-900 underline"
                 >
                   Terms and Conditions
@@ -96,7 +141,10 @@ export function SignUp() {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
-          <Button className="mt-6" fullWidth>
+          <div className="mb-4">
+          </div>
+          {errors.agree && <ErrorMessage mess={errors.agree.message} />}
+          <Button className="mt-6" fullWidth type="submit">
             Register Now
           </Button>
 

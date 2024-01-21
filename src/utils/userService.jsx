@@ -1,6 +1,8 @@
+import { API_URL } from "./config";
+
 export const userServices = {
     signin: async (data) => {
-        const res = await fetch('https://localhost:3000/api/users/login', {
+        const res = await fetch(`${API_URL}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -17,7 +19,7 @@ export const userServices = {
 
     getProfile: async () => {
         const token = localStorage.getItem('token');
-        const res = await fetch('https://localhost:3000/api/users/me', {
+        const res = await fetch(`${API_URL}/users/me`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -25,5 +27,20 @@ export const userServices = {
     
         const data = await res.json();
         return data;
+    },
+
+    signup: async (data) => {  
+        const res = await fetch(`${API_URL}/users/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+
+        const rs = await res.json();    
+        console.log(rs);
+        return rs;
     }
+    
 }

@@ -1,4 +1,6 @@
 import { useLocation } from "react-router-dom";
+import { useGlobalContext } from '../../context'
+
 import {
   Navbar,
   Typography,
@@ -8,8 +10,9 @@ import {
 } from "@material-tailwind/react";
 
 export function Header() {
-  const { pathname } = useLocation();
-  const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const { user } = useGlobalContext();
+  let { pathname } = useLocation();
+  const [layout="", page=""] = pathname.split("/").filter((el) => el !== "");
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -40,7 +43,7 @@ export function Header() {
               color="blue-gray"
               className="font-normal"
             >
-              {page}
+              {page || "Home"}
             </Typography>
           </Breadcrumbs>
           <Typography variant="h6" color="blue-gray">
@@ -49,13 +52,13 @@ export function Header() {
         </div>
 
         <div className="flex items-center border p-4 rounded-xl bg-white ">
-          <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />;
+          <Avatar src={user.image} alt="avatar" />;
             <Typography
               variant="small"
               color="blue-gray"
               className="font-normal mx-4 font-bold"
             >
-              Mark Hiddleston
+              {user.name}
             </Typography>
 
             <Button color="red" onClick={handleLogout}>Log out</Button>

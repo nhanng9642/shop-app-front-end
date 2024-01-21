@@ -8,7 +8,7 @@ export default function Footer() {
                     py-4 md:flex-row md:justify-between">
         <Typography
           variant="small"
-          className="mb-4 text-center font-normal 
+          className="mb-4 text-center font-normal opacity-50
           text-blue-gray-900 md:mb-0"
         >
           &copy; {new Date().getFullYear()} Book Shop App. All rights reserved.

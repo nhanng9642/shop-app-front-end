@@ -1,29 +1,34 @@
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
     Input,
     Button,
     Typography,
 } from "@material-tailwind/react";
+import { toast } from "react-hot-toast";
 
 import { useGlobalContext, signin } from '../../context';
 import { Link } from "react-router-dom";
 
 import { userServices } from "../../utils";
-
+import { useState, useRef, useEffect } from "react";
+import ErrorMessage from "../../components/ErrorMessage";
 
 export function SignIn() {
     const { state, dispatch } = useGlobalContext();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [error, setError] = useState(false);
 
     const onSubmit = async (data) => {
         const res = await userServices.signin(data);
         console.log(res)
+
         if (res.status === 'success') {
             const user = res.data;
             dispatch(signin(user));
+            toast.success('Sign in successfully');
             localStorage.setItem('token', res.token);
         } else {
-            alert('login failed');
+            setError(true);
         }
     }
 
@@ -41,8 +46,9 @@ export function SignIn() {
                         <Typography variant="small" color="blue-gray" className="-mb-5 font-medium">
                             Email
                         </Typography>
-                        <Input {...register("email", { required: true })}
-                            size="md"
+                        <Input {...register("email", { required: "Please enter your email" })}
+                            autoFocus
+                            size="md" onFocus={() => setError(false)}
                             placeholder="name@mail.com"
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
@@ -50,9 +56,7 @@ export function SignIn() {
                             }}
                         />
                         {errors.email &&
-                            <span className="-mt-5 text-red-600">
-                                Please enter your email
-                            </span>
+                            <ErrorMessage mess={errors.email.message} />
                         }
                     </div>
 
@@ -61,8 +65,8 @@ export function SignIn() {
                             color="blue-gray" className="-mb-5 font-medium">
                             Password
                         </Typography>
-                        <Input {...register("password", { required: true })}
-                            type="password"
+                        <Input {...register("password", { required: "Please enter your password" })}
+                            type="password" onFocus={() => setError(false)}
                             size="md"
                             placeholder="********"
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -70,13 +74,12 @@ export function SignIn() {
                                 className: "before:content-none after:content-none",
                             }}
                         />
-                        {errors.password &&
-                            <span className="-mt-5 text-red-600">
-                                Please enter your password
-                            </span>
-                        }
+                        {errors.password && <ErrorMessage mess={errors.password.message} />}
 
+                        {error && <ErrorMessage mess="Email or password is incorrect"/>}
                     </div>
+
+
                     <Button className="mt-6 text-md" fullWidth onClick={handleSubmit(onSubmit)}>
                         Sign In
                     </Button>

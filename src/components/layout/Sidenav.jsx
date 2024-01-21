@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Button,
   Typography,
@@ -47,7 +47,6 @@ export function Sidenav({ routes }) {
                   {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
-                      color={isActive ? "black" : "blue-gray"}
                       className="flex items-center gap-4 px-4 capitalize"
                       fullWidth
                     >

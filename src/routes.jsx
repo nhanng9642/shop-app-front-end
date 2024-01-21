@@ -1,10 +1,10 @@
 import {
     HomeIcon,
     UserCircleIcon,
-    TableCellsIcon,
     InformationCircleIcon,
     ServerStackIcon,
     RectangleStackIcon,
+    BookOpenIcon,
 } from "@heroicons/react/24/solid";
 
 import { Account, Category, Dashboard, Product} from "./pages/admin";
@@ -31,7 +31,7 @@ export const routes = [
                 element: <Category />,
             },
             {
-                icon: <TableCellsIcon {...icon} />,
+                icon: <BookOpenIcon {...icon} />,
                 name: "product",
                 path: "/product",
                 element: <Product />,
