@@ -5,7 +5,6 @@ import {
 } from "@material-tailwind/react";
 
 export function Sidenav({ routes }) {
-
   return (
     <aside
       className={`bg-white shadow-sm
@@ -26,8 +25,11 @@ export function Sidenav({ routes }) {
       </div>
       
       <div className="m-4">
-        {routes.map(({ layout, title, pages }, key) => (
-          <ul key={key} className="mb-4 flex flex-col gap-1">
+        {routes.map(({ layout, title, pages }, key) => { 
+          if (layout !== "admin") return null;
+          
+          return (
+           <ul key={key} className="mb-4 flex flex-col gap-1">
             {title && (
               <li className="mx-3.5 mt-4 mb-2">
                 <Typography
@@ -45,7 +47,7 @@ export function Sidenav({ routes }) {
                   {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
-                      color={isActive ? "dark" : "blue-gray"}
+                      color={isActive ? "black" : "blue-gray"}
                       className="flex items-center gap-4 px-4 capitalize"
                       fullWidth
                     >
@@ -62,7 +64,7 @@ export function Sidenav({ routes }) {
               </li>
             ))}
           </ul>
-        ))}
+        )})}
       </div>
     </aside>
   );

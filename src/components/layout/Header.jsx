@@ -11,6 +11,11 @@ export function Header() {
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  }
+
   return (
     <Navbar
       color="transparent"
@@ -53,7 +58,7 @@ export function Header() {
               Mark Hiddleston
             </Typography>
 
-            <Button color="red">Log out</Button>
+            <Button color="red" onClick={handleLogout}>Log out</Button>
         </div>
       </div>
     </Navbar>

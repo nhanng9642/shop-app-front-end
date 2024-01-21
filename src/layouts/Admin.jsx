@@ -1,6 +1,4 @@
-import { Routes, Route } from "react-router-dom";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
-import { IconButton } from "@material-tailwind/react";
+import { Routes, Route, Outlet } from "react-router-dom";
 
 import {
     Footer, Header, Sidenav
@@ -17,14 +15,16 @@ export function Admin() {
       <div className="p-4 xl:ml-80">
         <Header />
 
-        <Routes>
+        <Outlet />
+        {/* <Routes>
           {routes.map(
             ({ layout, pages }) =>
+              layout === "admin" &&
               pages.map(({ path, element }) => (
-                <Route exact path={layout+ path} element={element} />
+                <Route exact path={path} element={element} />
               ))
           )}
-        </Routes>
+        </Routes> */}
         
         <div className="text-blue-gray-600">
           <Footer />
