@@ -1,22 +1,34 @@
 import { API_URL, SUB_API_URL } from "./config";
 
 export const AccountService = {
-    getAccounts: async () => {
-        const response = await fetch(`${SUB_API_URL}/accounts`);
+    getAccounts: async (page = 1, limit = 7) => {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${SUB_API_URL}/accounts?page=${page}&limit=${limit}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         const data = await response.json();
         return data;
     },
 
     getAccount: async (id) => {
-        const response = await fetch(`${SUB_API_URL}/accounts/${id}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${SUB_API_URL}/accounts/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         const data = await response.json();
-        return data;
+        return data.data;
     },
 
     createAccount: async (account) => {
+        const token = localStorage.getItem('token');
         const response = await fetch(`${SUB_API_URL}/accounts`, {
             method: 'POST',
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(account)
@@ -26,9 +38,11 @@ export const AccountService = {
     },
 
     updateAccount: async (account) => {
-        const response = await fetch(`${SUB_API_URL}/accounts/${account.id}`, {
-            method: 'PUT',
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${SUB_API_URL}/accounts/${account._id}`, {
+            method: 'PATCH',
             headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(account)
@@ -38,11 +52,15 @@ export const AccountService = {
     },
 
     deleteAccount: async (id) => {
+        const token = localStorage.getItem('token');
         const response = await fetch(`${SUB_API_URL}/accounts/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
             method: 'DELETE'
         });
-        const data = await response.json();
-        return data;
+
+        return response;
     }
 
 

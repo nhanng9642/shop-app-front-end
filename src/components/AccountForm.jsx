@@ -7,29 +7,30 @@ import {
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 
-import { CategoryService } from "../utils/CategoryService";
+import { AccountService } from "../utils/AccountService";
 import ErrorMessage from "./ErrorMessage";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export function CategoryForm({ categoryID }) {
+export function AccountForm
+({ accountID }) {
   const navigate = useNavigate();
-  const [category, setCategory] = useState(null);
+  const [acccount, setAcccount] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    defaultValues: category,
+    defaultValues: acccount,
   });
 
   const onSubmit = async (data) => {
-    if (!categoryID) {
+    if (!accountID) {
       setIsUpdate(true);
       toast.promise(
-        CategoryService.createCategory(data),
+        AccountService.createAccount(data),
         {
           loading: 'Loading...',
-          success: <span>Category saved!</span>,
+          success: <span>Account saved!</span>,
           error: error => (<span>Could not save
             <br />
             <span className='capitalize'>{error.message}</span>
@@ -42,10 +43,10 @@ export function CategoryForm({ categoryID }) {
       console.log(data);
       setIsUpdate(true);
       toast.promise(
-        CategoryService.updateCategory(data),
+        AccountService.updateAccount(data),
         {
           loading: 'Loading...',
-          success: <span>Category saved!</span>,
+          success: <span>Account saved!</span>,
           error: error => (<span>Could not save
             <br />
             <span className='capitalize'>{error.message}</span>
@@ -58,38 +59,37 @@ export function CategoryForm({ categoryID }) {
 
   useEffect(() => {
     const fetchProduct = async (id) => {
-      const data = await CategoryService.getCategory(id);
+      const data = await AccountService.getAccount(id);
       if (!data)
         navigate("/page-not-found");
-      setCategory(data);
+      setAcccount(data);
       reset({ ...data });
     }
 
-    if (categoryID) {
-      fetchProduct(categoryID);
+    if (accountID) {
+      fetchProduct(accountID);
     }
-  }, [categoryID, reset])
-
+  }, [accountID, reset])
 
   return (
     <div>
       <Typography variant="h4">
-        {categoryID ? "Edit Category" : "Add Category"}
+        {accountID ? "Edit Account" : "Add Account"}
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"
         className="mt-4 mb-2 mx-auto w-full">
         <div className="grid grid-cols-2 gap-6">
           <div>
-            {/* Name */}
+            {/* User ID */}
             <div className="mb-3 flex flex-col gap-6" >
               <Typography variant="small" color="blue-gray"
                 className="-mb-5 font-medium">
-                Name
+                User ID
               </Typography>
-              <Input  {...register('name', {
+              <Input  {...register('userId', {
                 required: 'Please enter category name',
-              })} autoFocus
+              })} disabled
                 placeholder="Category Name"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
@@ -104,10 +104,10 @@ export function CategoryForm({ categoryID }) {
             <div className="mb-1 flex flex-col gap-6 mt-4">
               <Typography variant="small" color="blue-gray"
                 className="-mb-5 font-medium">
-                Description
+                Balance
               </Typography>
-              <Textarea {...register('description')}
-                type="text"
+              <Input {...register('balance')}
+                type="number"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
@@ -119,7 +119,7 @@ export function CategoryForm({ categoryID }) {
         </div>
 
         <Button className="mt-6 w-1/6 ml-auto" fullWidth type="submit" disabled={isUpdate}>
-          {categoryID ? "Update Category" : "Add Category"}
+          {accountID ? "Update Account" : "Add Account"}
         </Button>
       </form>
 

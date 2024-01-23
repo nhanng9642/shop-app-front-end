@@ -11,7 +11,6 @@ export function GuestRoute({ children }) {
     }
 
     if (isAuthenticated && user) {
-        console.log(user)
         if (user.role == 'admin') {
             return (
                 <Navigate to="/admin/home" replace/>

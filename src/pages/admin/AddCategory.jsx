@@ -2,10 +2,10 @@ import React from 'react'
 import { CategoryForm } from '../../components'
 
 
-export default function AddCategorry() {
+export default function AddCategory() {
   return (
     <CategoryForm />
   )
 }
 
-export {AddCategorry}
+export {AddCategory}

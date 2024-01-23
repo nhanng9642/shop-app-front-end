@@ -23,7 +23,6 @@ export function CategoryTable() {
     useEffect(() => {
         const fetchTableRows = async () => {
             const data = await CategoryService.getCategories();
-            console.log(data);
             setTableRows(data);
         }
         fetchTableRows();
