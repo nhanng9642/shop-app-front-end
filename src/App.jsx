@@ -3,15 +3,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminRoute, AuthRoute, GuestRoute } from "./utils";
 
 import { Dashboard, Category, Product, Account } from "./pages/admin"
+
 import NotFound from "./pages/NotFound";
-import Loading from "./pages/Loading";
 import { Toaster } from "react-hot-toast";
+import AddProduct from "./pages/admin/AddProduct";
+import EditProduct from "./pages/admin/EditProduct";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/admin/*" element={
+        <Route path="/admin" element={
           <AuthRoute>
             <AdminRoute>
               <Admin />
@@ -23,6 +25,9 @@ function App() {
           <Route path="home" element={<Dashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="product" element={<Product />} />
+          <Route path="product/add" element={<AddProduct />} />
+          <Route path="product/:id" element={<EditProduct />} />
+
           <Route path="account" element={<Account />} />
 
         </Route>
@@ -33,7 +38,7 @@ function App() {
           </GuestRoute>
         } />
 
-        <Route path="/user/*" element={
+        <Route path="/user" element={
           <AuthRoute>
             <User />
           </AuthRoute>
@@ -47,7 +52,6 @@ function App() {
         reverseOrder={false}
       />
     </>
-
   );
 }
 

@@ -1,26 +1,28 @@
+import { API_URL } from "../../utils/config";
+
 import { useForm } from "react-hook-form";
 import {
     Input,
     Button,
     Typography,
 } from "@material-tailwind/react";
-import { toast } from "react-hot-toast";
 
+import { toast } from "react-hot-toast";
 import { useGlobalContext, signin } from '../../context';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { userServices } from "../../utils";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ErrorMessage from "../../components/ErrorMessage";
 
 export function SignIn() {
     const { state, dispatch } = useGlobalContext();
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [error, setError] = useState(false);
+    const [searchParams] = useSearchParams();
 
     const onSubmit = async (data) => {
         const res = await userServices.signin(data);
-        console.log(res)
 
         if (res.status === 'success') {
             const user = res.data;
@@ -31,6 +33,14 @@ export function SignIn() {
             setError(true);
         }
     }
+
+    useEffect(() => {
+        const token = searchParams.get('token');
+        if (token) {
+            localStorage.setItem('token', token);
+            location.reload();
+        }
+    }, [])
 
     return (
         <section className="flex bg-gray-100 min-h-screen">
@@ -76,7 +86,7 @@ export function SignIn() {
                         />
                         {errors.password && <ErrorMessage mess={errors.password.message} />}
 
-                        {error && <ErrorMessage mess="Email or password is incorrect"/>}
+                        {error && <ErrorMessage mess="Email or password is incorrect" />}
                     </div>
 
 
@@ -92,7 +102,11 @@ export function SignIn() {
                         </Typography>
                     </div>
                     <div className="space-y-4 mt-8">
-                        <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
+                        <Button size="lg" onClick={() => {
+                            window.location.href = `${API_URL}/auth/google`
+                        }}
+                            color="white"
+                            className="flex items-center gap-2 justify-center shadow-md" fullWidth>
                             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clipPath="url(#clip0_1156_824)">
                                     <path d="M16.3442 8.18429C16.3442 7.64047 16.3001 7.09371 16.206 6.55872H8.66016V9.63937H12.9813C12.802 10.6329 12.2258 11.5119 11.3822 12.0704V14.0693H13.9602C15.4741 12.6759 16.3442 10.6182 16.3442 8.18429Z" fill="#4285F4" />
@@ -109,7 +123,10 @@ export function SignIn() {
                             <span>Sign in With Google</span>
                         </Button>
 
-                        <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
+                        <Button size="lg" onClick={() => {
+                            window.location.href = `${API_URL}/auth/facebook`
+                        }} color="white"
+                            className="flex items-center gap-2 justify-center shadow-md" fullWidth>
                             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" viewBox="0 0 48 48">
                                 <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path><path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"></path>
                             </svg>

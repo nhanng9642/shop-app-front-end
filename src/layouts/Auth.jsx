@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import routes from "../routes";
 
 import { SignIn, SignUp } from "../pages/auth";
+import NotFound from "../pages/NotFound";
 export function Auth() {
 
   return (
@@ -14,6 +15,8 @@ export function Auth() {
               <Route exact path={path} element={element} />
             ))
         )}
+        <Route path="/*" element={<NotFound />} />
+
       </Routes>
     </div>
   );

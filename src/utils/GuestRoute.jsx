@@ -17,7 +17,6 @@ export function GuestRoute({ children }) {
                 <Navigate to="/admin/home" replace/>
             )
         } 
-        console.log('user');
         return (
             <Navigate to="/user" replace/>
         )

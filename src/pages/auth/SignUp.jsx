@@ -21,12 +21,12 @@ export function SignUp() {
     console.log(res)
 
     if (res.status === 'success') {
-        toast.success('Sign up successfully!')
-        navigate('/auth/sign-in');
+      toast.success('Sign up successfully!')
+      navigate('/auth/sign-in');
     } else {
-        setError(res.message);
+      setError(res.message);
     }
-}
+  }
 
   return (
     <section className="flex bg-gray-100 h-screen">
@@ -47,6 +47,12 @@ export function SignUp() {
             </Typography>
             <Input {...register('name', {
               required: 'Please enter your full name',
+              validate: (val) => {
+                const pattern = /^[a-zA-Z]+(\s[a-zA-Z]+)+$/;
+                if (!pattern.test(val.trim())) {
+                  return "Your name must be at least 2 words, and only contain letters";
+                }
+              }
             })}
               placeholder="Your Name" autoFocus
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -66,6 +72,12 @@ export function SignUp() {
             <Input onFocus={() => setError(false)}
               {...register('email', {
                 required: 'Please enter your email',
+                validate: (val) => {
+                  const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+                  if (!pattern.test(val.trim())) {
+                    return "Please enter a valid email";
+                  }
+                }
               })}
               placeholder="name@mail.com"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -84,6 +96,10 @@ export function SignUp() {
             </Typography>
             <Input {...register('password', {
               required: 'Please enter your password',
+              minLength: {
+                value: 6,
+                message: "Your password must be at least 6 characters",
+              }
             })}
               type="password"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
