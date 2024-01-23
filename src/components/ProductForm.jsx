@@ -11,10 +11,12 @@ import ErrorMessage from "./ErrorMessage";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ProductService } from "../utils/ProductService";
+import { useNavigate } from "react-router-dom";
 
 const imageDefault = "https://res.cloudinary.com/dv79err1w/image/upload/v1705988154/product/efwphbwmbnlwqbhau7pz.png?fbclid=IwAR1_hw5PdkO6EAzxOfDGh0-5uf1RlCceCpjAbC1fOW_x2J9wb70ZH-IsV-g";
 
 export function ProductForm({ productId }) {
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [preview, setPreview] = useState(null);
   const [fileName, setFileName] = useState(null);
@@ -28,7 +30,6 @@ export function ProductForm({ productId }) {
   const onSubmit = async (data) => {
     data.image = imageInput.current.files[0];
     if (!data.categoryID) data.categoryID = categories[0]._id;
-    console.log(data);
     if (!productId) {
       setIsUpdate(true);
       toast.promise(
@@ -69,6 +70,8 @@ export function ProductForm({ productId }) {
   useEffect(() => {
     const fetchProduct = async (productId) => {
       const data = await ProductService.getProduct(productId);
+      if (!data)
+        navigate("/page-not-found");
       setProduct(data);
       reset({ ...data, categoryID: data.categoryID._id, image: null });
     }
@@ -81,7 +84,7 @@ export function ProductForm({ productId }) {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const data = await CategoryService.getCategory();
+      const data = await CategoryService.getCategories();
       setCategories(data);
     }
     fetchCategories();

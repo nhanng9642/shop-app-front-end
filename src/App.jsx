@@ -2,7 +2,7 @@ import { Admin, Auth, User } from "./layouts";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminRoute, AuthRoute, GuestRoute } from "./utils";
 
-import { Dashboard, Category, Product, Account } from "./pages/admin"
+import { Dashboard, Category, Product, Account, EditCategory, AddCategorry } from "./pages/admin"
 
 import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
@@ -24,6 +24,8 @@ function App() {
           <Route path="" element={<Navigate to="/admin/home" />} />
           <Route path="home" element={<Dashboard />} />
           <Route path="category" element={<Category />} />
+          <Route path="category/add" element={<AddCategorry />} />
+          <Route path="category/:id" element={<EditCategory />} />
           <Route path="product" element={<Product />} />
           <Route path="product/add" element={<AddProduct />} />
           <Route path="product/:id" element={<EditProduct />} />

@@ -59,6 +59,7 @@ export function TableTopBestSeller() {
             {tableRows.map(
               (
                 {
+                  _id,
                   author,
                   name,
                   categoryID: { name: category },
@@ -75,7 +76,7 @@ export function TableTopBestSeller() {
                   : "p-3 border-b border-blue-gray-50";
 
                 return (
-                  <tr key={name}>
+                  <tr key={_id}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
                         <Avatar

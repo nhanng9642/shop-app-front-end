@@ -7,3 +7,5 @@ export default function AddProduct() {
     <ProductForm />
   )
 }
+
+export {AddProduct}

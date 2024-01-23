@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import {
     Footer, Header, Sidenav
@@ -16,16 +16,6 @@ export function Admin() {
         <Header />
 
         <Outlet />
-        {/* <Routes>
-          {routes.map(
-            ({ layout, pages }) =>
-              layout === "admin" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
-          )}
-        </Routes> */}
-        
         <div className="text-blue-gray-600">
           <Footer />
         </div>

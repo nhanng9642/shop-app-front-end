@@ -1,10 +1,11 @@
 import React from 'react'
+import { CategoryTable } from '../../components'
 
 
 export default function Category() {
   return (
     <div>
-      Category
+      <CategoryTable />
     </div>
   )
 }

@@ -16,21 +16,6 @@ export const ProductService = {
         return data;
     },
 
-    deleteProduct: async (id) => {
-        const token = localStorage.getItem('token');
-
-        const response = await fetch(`${API_URL}/books/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await response.json();
-        console.log(data);
-        return data;
-    },
-
     addProduct: async (product) => {
         const token = localStorage.getItem('token');
 

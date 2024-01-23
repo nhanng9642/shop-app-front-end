@@ -1,30 +1,20 @@
-import React from 'react'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
     Card,
     CardHeader,
     Typography,
     CardBody,
-    Avatar,
-    CardFooter,
     Button,
-    IconButton
-} from "@material-tailwind/react";
-import { Link, useSearchParams } from "react-router-dom";
-import { PencilIcon } from "@heroicons/react/24/solid";
+} from '@material-tailwind/react'
 
-import { ProductService } from "../utils/ProductService"
-import { Pagination } from './Pagination'
-const TABLE_HEAD = ["Book", "Author", "Inventory", "Price", "Genre", "Description", "Actions"];
-import { ConfirmDeleteModal } from './CofirmDeleteModal';
+import { CategoryService } from '../utils/CategoryService'
 import { Action } from './Action';
+import { Link } from 'react-router-dom';
 
-export function PaginationProducts() {
+const TABLE_HEAD = ["#", "Name", "Description", "Action"];
+
+export function CategoryTable() {
     const [tableRows, setTableRows] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [pageLimit, setPageLimit] = useState(0);
-    const page = +searchParams.get("page") || 1;
-
     const [forceUpdateFlag, setForceUpdateFlag] = useState(false);
     const manualRerender = () => {
         setForceUpdateFlag(prevFlag => !prevFlag);
@@ -32,27 +22,26 @@ export function PaginationProducts() {
 
     useEffect(() => {
         const fetchTableRows = async () => {
-            if (page < 1) setSearchParams({ ...searchParams, page: 1 })
-
-            const data = await ProductService.getProducts(page);
-            if (page > data.totalPages)
-                setSearchParams({ ...searchParams, page: data.totalPages })
-            setPageLimit(data.totalPages)
-            setTableRows(data.data);
+            const data = await CategoryService.getCategories();
+            console.log(data);
+            setTableRows(data);
         }
-
         fetchTableRows();
-    }, [page, forceUpdateFlag, pageLimit])
+    }, [forceUpdateFlag])
 
     return (
         <Card className="h-full w-full mt-1">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
-                    <Typography variant="h5" color="blue-gray">
-                        Products
-                    </Typography>
-                    <Link to="/admin/product/add">
-                        <Button color="green" >Add Product</Button>
+                    <div>
+                        <Typography variant="h5" color="blue-gray">
+                            Category
+                        </Typography>
+
+                    </div>
+
+                    <Link to="/admin/category/add">
+                        <Button color="green" >Add Category</Button>
                     </Link>
                 </div>
             </CardHeader>
@@ -71,7 +60,7 @@ export function PaginationProducts() {
                                         color="blue-gray"
                                         className="font-normal leading-none opacity-70"
                                     >
-                                        {head || ""}
+                                        {head}
                                     </Typography>
                                 </th>
                             ))}
@@ -82,12 +71,7 @@ export function PaginationProducts() {
                             (
                                 {
                                     _id,
-                                    author,
                                     name,
-                                    categoryID,
-                                    image,
-                                    price,
-                                    inventory,
                                     description,
                                 },
                                 index,
@@ -101,56 +85,24 @@ export function PaginationProducts() {
                                     <tr key={_id}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar
-                                                    src={image}
-                                                    alt={name}
-                                                    size="md"
-                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                                />
                                                 <Typography
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-bold"
                                                 >
-                                                    {name || ""}
+                                                    {index + 1}
                                                 </Typography>
                                             </div>
                                         </td>
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {author}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {inventory || ""}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {price || ""}
-                                            </Typography>
-                                        </td>
+
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <Typography
                                                     variant="small"
                                                     color="blue-gray"
-                                                    className="font-normal"
+                                                    className="font-bold"
                                                 >
-                                                    {categoryID?.name || "Null"}
+                                                    {name}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -160,30 +112,23 @@ export function PaginationProducts() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {description || ""}
+                                                {description}
                                             </Typography>
                                         </td>
-
-                                        <td className={classes} >
-                                            <Action routeEdit={`/admin/product/`}
+                                        <td className={classes}>
+                                            <Action routeEdit={`/admin/category/`}
                                                 _id={_id}
                                                 manualRerender={manualRerender}
-                                                deleteRow={ProductService.deleteProduct}
+                                                deleteRow={CategoryService.deleteCategory}
                                             />
                                         </td>
                                     </tr>
                                 );
                             },
                         )}
-
-
                     </tbody>
                 </table>
             </CardBody>
-
-            <CardFooter className='mx-auto -mt-4'>
-                <Pagination pageLimit={pageLimit} />
-            </CardFooter>
         </Card>
-    )
+    );
 }

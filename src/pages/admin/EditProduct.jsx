@@ -14,3 +14,5 @@ export default function EditProduct() {
         <ProductForm productId={productId} />
     )
 }
+
+export {EditProduct}

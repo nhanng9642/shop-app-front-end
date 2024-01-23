@@ -10,18 +10,16 @@ import {
 import { ProductService } from "../utils/ProductService";
 import { toast } from "react-hot-toast";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
 
-export function ConfirmDeleteModal({id, forceUpdate}) {
+export function ConfirmDeleteModal({ id, forceUpdate, deleteRow }) {
     const [open, setOpen] = React.useState(false);
-    const navigate = useNavigate();
     const handleOpen = () => setOpen(!open);
 
     const handleConfirm = async () => {
         console.log(id)
         setOpen(false);
         toast.promise(
-            ProductService.deleteProduct(id),
+            deleteRow(id),
             {
                 loading: 'Deleting...',
                 success: (data) => {
@@ -44,28 +42,27 @@ export function ConfirmDeleteModal({id, forceUpdate}) {
     return (
         <>
             <IconButton size="md" color='red' onClick={handleOpen} >
-                <TrashIcon className="w-5 h-5"/>
+                <TrashIcon className="w-5 h-5" />
             </IconButton>
             <Dialog open={open} handler={handleOpen}>
-                <DialogHeader>Its a simple dialog.</DialogHeader>
+                <DialogHeader>Delete This Item</DialogHeader>
                 <DialogBody>
-                    The key to more success is to have a lot of pillows. Put it this way,
-                    it took me twenty five years to get these plants, twenty five years of
-                    blood sweat and tears, and I&apos;m never giving up, I&apos;m just
-                    getting started. I&apos;m up to something. Fan luv.
+                    Are you sure you want to delete this item?
+                    This action cannot be reversed.
                 </DialogBody>
                 <DialogFooter>
+                    <Button variant="gradient" color="red" onClick={handleConfirm}>
+                        <span>Delete</span>
+                    </Button>
                     <Button
-                        variant="text"
-                        color="red"
+                        variant="gradient"
+                        color="black"
                         onClick={handleOpen}
-                        className="mr-1"
+                        className="ml-2"
                     >
                         <span>Cancel</span>
                     </Button>
-                    <Button variant="gradient" color="green" onClick={handleConfirm}>
-                        <span>Confirm</span>
-                    </Button>
+
                 </DialogFooter>
             </Dialog>
         </>
