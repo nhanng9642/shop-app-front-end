@@ -93,12 +93,12 @@ export function ProductForm({ productId }) {
   return (
     <div>
       <Typography variant="h4">
-        {productId ? "Edit product" : "Add Product"}
+        {productId ? "Edit Product" : "Add Product"}
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"
         className="mt-4 mb-2 mx-auto w-full">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-8">
           <div>
             {/* Name */}
             <div className="mb-3 flex flex-col gap-6" >

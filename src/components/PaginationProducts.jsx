@@ -46,7 +46,7 @@ export function PaginationProducts() {
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <Typography variant="h5" color="blue-gray">
-                        Products
+                        Product
                     </Typography>
                     <Link to="/admin/product/add">
                         <Button color="green" >Add Product</Button>

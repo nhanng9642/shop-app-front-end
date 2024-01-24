@@ -96,7 +96,7 @@ export function SignIn() {
 
                     <div className="mt-6 flex justify-center">
                         <Typography variant="small" className="font-medium text-gray-900 ">
-                            <a href="#">
+                            <a href="forgot-password">
                                 Forgot Password
                             </a>
                         </Typography>
@@ -140,13 +140,6 @@ export function SignIn() {
                 </form>
 
             </div>
-            {/* <div className="w-2/5 h-full hidden lg:block">
-                <img
-                    src="/img/pattern.png"
-                    className="h-full w-full object-cover rounded-3xl"
-                />
-            </div> */}
-
         </section>
     );
 }

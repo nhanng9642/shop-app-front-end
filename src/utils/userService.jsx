@@ -41,6 +41,39 @@ export const userServices = {
         const rs = await res.json();    
         console.log(rs);
         return rs;
-    }
+    },
+
+    forgotPassword: async (data) => {
+        const res = await fetch(`${API_URL}/users/forgot-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+
+        const rs = await res.json();    
+        if (rs.status !== 'success') {
+            throw new Error(rs.message);
+        }
+
+        return rs;
+    },
+
+    resetPassword: async (data, token) => {
+        const res = await fetch(`${API_URL}/users/reset-password/${token}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+
+        const rs = await res.json();    
+        if (rs.status !== 'success') {
+            throw new Error(rs.message);
+        }
+        return rs;
+    },
     
 }

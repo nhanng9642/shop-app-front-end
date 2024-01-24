@@ -72,14 +72,14 @@ export function AccountForm
   }, [accountID, reset])
 
   return (
-    <div>
+    <div className='min-h-[400px]'>
       <Typography variant="h4">
         {accountID ? "Edit Account" : "Add Account"}
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"
-        className="mt-4 mb-2 mx-auto w-full">
-        <div className="grid grid-cols-2 gap-6">
+        className="mt-4 mb-2 mx-auto w-2/5">
+        <div className="grid grid-cols gap-6">
           <div>
             {/* User ID */}
             <div className="mb-3 flex flex-col gap-6" >
@@ -118,7 +118,7 @@ export function AccountForm
 
         </div>
 
-        <Button className="mt-6 w-1/6 ml-auto" fullWidth type="submit" disabled={isUpdate}>
+        <Button className="mt-6 w-fit ml-auto" fullWidth type="submit" disabled={isUpdate}>
           {accountID ? "Update Account" : "Add Account"}
         </Button>
       </form>

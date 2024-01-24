@@ -29,7 +29,7 @@ export function TableTopBestSeller() {
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Top Lower Stock Books
+              Top Lower Stock Book
             </Typography>
           </div>
         </div>
