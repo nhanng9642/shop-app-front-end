@@ -2,8 +2,9 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useUserContext } from "../../context/user";
 import { Typography,Button } from "@material-tailwind/react";
-import { ProductService, cartService} from "../../utils";
+import { ProductService, cartService, userServices} from "../../utils";
 import { ProductCartQty } from "../../components";
+import {toast} from "react-hot-toast"
 export const Cart = () => {
 	const [books, setBooks] = useState([]);
 	const {cart , setCart} = useUserContext();
@@ -16,7 +17,17 @@ export const Cart = () => {
 		}
 		fetchData();
 	}, []);
-	
+		
+	const handlePayment = async () => {
+		const res = await userServices.payment();
+		if(res.status == 'success') {
+			toast.success(res.message);
+			setCart([]);
+		}
+		else {
+			toast.error(res.message);
+		}
+	}
 	
 	const renderEmptyCart = () => (
 		<Typography className="text-base">
@@ -53,19 +64,28 @@ export const Cart = () => {
 						},0)
 					}</b>
 				</Typography>
-				<div className="flex flex-row flex-wrap justify-between items-center">
-					<Button className="text-white text-base bg-[#F50057] w-[160px] mb-1 mr-5"
-						onClick={() => {
-							cartService.deleteAllCartItem()
-								.then(res => {
-									if(res.status == 204){
-										setCart([]);
-									}
-								})
-						}}
-					>
-						EMPTY CART
-					</Button>
+				<div class="grid grid-cols-2 gap-4">
+					<div className="flex flex-row flex-wrap justify-between items-center">
+						<Button className="text-white text-base bg-[#F50057] w-[160px] mb-1 mr-5"
+							onClick={() => {
+								cartService.deleteAllCartItem()
+									.then(res => {
+										if(res.status == 204){
+											setCart([]);
+										}
+									})
+							}}
+						>
+							EMPTY CART
+						</Button>
+					</div>
+					<div className="flex flex-row flex-wrap justify-between items-center">
+						<Button className="text-white text-base bg-[#263238] w-[160px] mb-1 mr-5"
+							onClick={handlePayment}
+						>
+							PAY	
+						</Button>
+					</div>
 				</div>
 			</div>
 		</>

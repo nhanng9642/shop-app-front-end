@@ -1,4 +1,4 @@
-import { API_URL } from "./config";
+import { API_URL,SUB_API_URL } from "./config";
 import axios from "axios"
 export const userServices = {
     signin: async (data) => {
@@ -104,5 +104,17 @@ export const userServices = {
         });
         const rs = await res.json();
         return rs;
+    },
+    payment: async (data) => {
+        const token = localStorage.getItem('token'); 
+        const res = await fetch(`${SUB_API_URL}/accounts/payment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        const rs = await res.json();
+        return rs; 
     }
 }
