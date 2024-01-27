@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
 import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
-
+import { UserContextProvider } from "./context/user";
 function App() {
   return (
     <>
@@ -41,9 +41,11 @@ function App() {
           </GuestRoute>
         } />
 
-        <Route path="/user" element={
+        <Route path="/user/*" element={
           <AuthRoute>
-            <User />
+            <UserContextProvider>
+              <User />
+            </UserContextProvider>
           </AuthRoute>
         } />
 

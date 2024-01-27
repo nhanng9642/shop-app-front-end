@@ -1,5 +1,5 @@
 import { API_URL } from "./config";
-
+import axios from "axios"
 export const userServices = {
     signin: async (data) => {
         const res = await fetch(`${API_URL}/users/login`, {
@@ -75,5 +75,34 @@ export const userServices = {
         }
         return rs;
     },
-    
+    updateMe: async (data) => {
+        const token = localStorage.getItem('token');
+        
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        if(data.image){
+            formData.append('image', data.image);
+        }
+        const response = await axios.post(`${API_URL}/users/update-me`,formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return response.data;
+    },
+    changePassword: async (data) => {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/users/update-password`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        });
+        const rs = await res.json();
+        return rs;
+    }
 }

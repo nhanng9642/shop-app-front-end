@@ -15,7 +15,33 @@ export const ProductService = {
         const data = await response.json();
         return data;
     },
-
+    getProductsWithFilter: async (query) => {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/books?${query}`, {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+           
+        });
+        const data = await response.json();
+        return data;
+    },
+    getLowerStockProducts: async (query) => {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/books/top-lower?${query}`, {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+           
+        });
+        const data = await response.json();
+        return data;
+    }
+    ,
     addProduct: async (product) => {
         const token = localStorage.getItem('token');
 
@@ -93,5 +119,4 @@ export const ProductService = {
         const data = await response.json();
         return data.data;
     },  
-
 }
