@@ -4,6 +4,7 @@ export const userServices = {
     signin: async (data) => {
         const res = await fetch(`${API_URL}/users/login`, {
             method: 'POST',
+            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -21,7 +22,7 @@ export const userServices = {
         const res = await fetch(`${API_URL}/users/me`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }
+            },
         })
     
         const data = await res.json();
@@ -86,7 +87,8 @@ export const userServices = {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`
-            }
+            },
+            mode: 'no-cors',
         })
         return response.data;
     },
@@ -103,7 +105,7 @@ export const userServices = {
         const rs = await res.json();
         return rs;
     },
-    payment: async (data) => {
+    payment: async () => {
         const token = localStorage.getItem('token'); 
         const res = await fetch(`${SUB_API_URL}/accounts/payment`, {
             method: 'POST',

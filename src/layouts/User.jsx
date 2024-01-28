@@ -1,4 +1,3 @@
-import React from 'react'
 import {Routes, Route} from "react-router-dom"
 import { HeaderUser, FooterUser } from '../components/layout'
 import { Home, ProductView, Cart } from '../pages/user'

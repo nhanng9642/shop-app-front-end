@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useState} from "react";
 import {useForm} from "react-hook-form"
 import { toast } from "react-hot-toast";
 import { userServices } from "../utils";
@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react"; 
 import ErrorMessage from "./ErrorMessage";
 export function ChangePassDialog({open, setOpen}) {
-	const {register, handleSubmit, reset, formState: {errors}} = useForm();
+	const {register, handleSubmit, formState: {errors}} = useForm();
 	const [err, setErr] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
 	const {dispatch} = useGlobalContext();

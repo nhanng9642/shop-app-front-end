@@ -9,8 +9,6 @@ import {
     MenuHandler,
     MenuList,
     MenuItem,
-    Button,
-    Avatar
 } from "@material-tailwind/react";
 import {ShoppingCartIcon,MagnifyingGlassIcon} from "@heroicons/react/24/solid";
 import {useNavigate,Link} from "react-router-dom";
@@ -68,6 +66,7 @@ export const HeaderUser = () => {
 								/>
 								{searchResult.map(item => (
 								<MenuItem 
+									key={`searchMenuItem-${item._id}`}
 									onClick={() => {navigate(`product-views/${item._id}`)}}
 									>
 									<Link to={`product-views/${item._id}`}>

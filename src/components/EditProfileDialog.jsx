@@ -13,7 +13,7 @@ import {useForm} from "react-hook-form";
 import { userServices } from "../utils";
 import {toast} from "react-hot-toast"
 export function EditProfileDialog({open, setOpen}) {
-	const {register, handleSubmit, reset, formState: {errors}} = useForm();
+	const {register, handleSubmit, formState: {errors}} = useForm();
 	const [preview, setPreview] = useState(null);
 	const [isUpdate, setIsUpdate] = useState(false)
 	

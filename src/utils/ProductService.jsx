@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL, SUB_API_URL } from './config';
+import { API_URL } from './config';
 
 export const ProductService = {
     getProducts: async (page = 1, limit = 7) => {

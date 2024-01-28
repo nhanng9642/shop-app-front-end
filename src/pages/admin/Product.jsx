@@ -1,4 +1,3 @@
-import React from 'react'
 import {PaginationProducts} from '../../components'
 
 export default function Product() {

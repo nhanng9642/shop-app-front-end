@@ -21,37 +21,37 @@ export const ProductView = () => {
 	})
 	
 	return (
-		<div class="relative flex flex-wrap md:flex-nowrap justify-center bg-clip-border rounded-xl bg-white text-gray-700 shadow-md w-full max-w-[100%] flex-row p-8">
-			<div class="relative w-1/5 min-w-[300px] m-0 overflow-hidden text-gray-700 bg-white rounded-r-none bg-clip-border rounded-xl shrink-0">
+		<div className="relative flex flex-wrap md:flex-nowrap justify-center bg-clip-border rounded-xl bg-white text-gray-700 shadow-md w-full max-w-[100%] flex-row p-8">
+			<div className="relative w-1/5 min-w-[300px] m-0 overflow-hidden text-gray-700 bg-white rounded-r-none bg-clip-border rounded-xl shrink-0">
 				<img
 				src={product.image}
-				alt="card-image" class="object-contain w-full h-full" />
+				alt="card-image" className="object-contain w-full h-full" />
 			</div>
-			<div class="p-6 grow">
-				<h4 class="block mb-2 font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+			<div className="p-6 grow">
+				<h4 className="block mb-2 font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
 					{product.name}
 				</h4>
-				<p class="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Author: {product.author}
 				</p>
-				<p class="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Description: {product.description}
 				</p>
-				<p class="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Inventory: {product.inventory}
 				</p>
-				<p class="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Inventory: <b>{product.price}</b>
 				</p>
-				<p class="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Publishing Year: <b>{product.publishedYear}</b>
 				</p>
-				<p class="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Similar product:	
 				</p>
-				<div class="mb-8 grid grid-cols-5 gap-4">
+				<div className="mb-8 grid grid-cols-5 gap-4">
 					{similarProducts.map(book => (
-						<Link to={`/user/product-views/${book._id}`}>
+						<Link key={`similarItem-${book._id}`} to={`/user/product-views/${book._id}`}>
 							<div className="flex flex-col justify-center cursor-pointer">
 								<img
 									src={book.image}
@@ -63,12 +63,12 @@ export const ProductView = () => {
 				</div>
 				<Link to="/">
 					<button
-						class="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
+						className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
 						type="button">
 						Continue shopping
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-							stroke-width="2" class="w-4 h-4">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+							strokeWidth="2" className="w-4 h-4">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
 						</svg>
 					</button>
 				</Link>

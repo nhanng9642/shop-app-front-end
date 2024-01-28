@@ -2,13 +2,10 @@ import {
     HomeIcon,
     UserCircleIcon,
     InformationCircleIcon,
-    ServerStackIcon,
-    RectangleStackIcon,
     BookOpenIcon,
 } from "@heroicons/react/24/solid";
 
 import { Account, Category, Dashboard, Product } from "./pages/admin";
-import { SignIn, SignUp } from "./pages/auth";
 
 const icon = {
     className: "w-5 h-5 text-inherit",

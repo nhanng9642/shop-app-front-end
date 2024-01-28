@@ -37,13 +37,14 @@ export const Cart = () => {
 	)
 	const renderCart = () => (
 		<>
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
 				{
 					books.map(item => {
 						let c = cart.find(i => i.productID === item._id);
 						if(c){
 							return (
 								<ProductCartQty
+									key={`cartItem-${item._id}`}
 									product={item}
 									quantity={c.quantity}
 								/>
@@ -64,7 +65,7 @@ export const Cart = () => {
 						},0)
 					}</b>
 				</Typography>
-				<div class="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-2 gap-4">
 					<div className="flex flex-row flex-wrap justify-between items-center">
 						<Button className="text-white text-base bg-[#F50057] w-[160px] mb-1 mr-5"
 							onClick={() => {

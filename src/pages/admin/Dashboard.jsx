@@ -1,4 +1,3 @@
-import React from 'react'
 import { StatisticsCard, StatisticsChart, TableTopBestSeller } from '../../components'
 import {
   CurrencyDollarIcon,
