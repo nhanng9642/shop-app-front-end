@@ -44,6 +44,9 @@ export const Home = memo(({onAddToCart}) => {
 		}
 		fetchCategories();
 		fetchTopLowerStock();	
+		return () => {
+			filterCategories.splice(1);
+		}
 	},[]);
 	useEffect(() => {
 		const fetchProduct = async () => {

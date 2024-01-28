@@ -11,7 +11,6 @@ export const userServices = {
         });
     
         const rs = await res.json();
-        console.log(rs);
         
         return rs;
     },
@@ -39,7 +38,6 @@ export const userServices = {
         });
 
         const rs = await res.json();    
-        console.log(rs);
         return rs;
     },
 
