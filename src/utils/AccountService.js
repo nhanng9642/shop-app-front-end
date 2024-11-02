@@ -1,4 +1,4 @@
-import { API_URL, SUB_API_URL } from "./config";
+import { SUB_API_URL } from "./config";
 
 export const AccountService = {
     getAccounts: async (page = 1, limit = 7) => {

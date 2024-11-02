@@ -4,7 +4,7 @@ import {
   Typography,
   Textarea,
 } from "@material-tailwind/react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { CategoryService } from "../utils/CategoryService";
 import ErrorMessage from "./ErrorMessage";

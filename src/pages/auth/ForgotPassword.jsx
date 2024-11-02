@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useForm } from "react-hook-form";
 import { Typography, Input, Button } from '@material-tailwind/react';
 import { toast } from 'react-hot-toast';

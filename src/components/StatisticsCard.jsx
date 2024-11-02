@@ -2,11 +2,8 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
     Typography,
 } from "@material-tailwind/react";
-import React from "react";
-
 export function StatisticsCard({ color, icon, title, value }) {
     return (
         <Card className="border border-blue-gray-100 shadow-sm">
