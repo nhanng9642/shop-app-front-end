@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useGlobalContext } from '../../context'
+import { useAuth } from '@/context/auth-context'
 
 import {
   Navbar,
@@ -10,7 +10,7 @@ import {
 } from "@material-tailwind/react";
 
 export function Header() {
-  const { user } = useGlobalContext();
+  const { user } = useAuth();
   let { pathname } = useLocation();
   const [layout="", page=""] = pathname.split("/").filter((el) => el !== "");
 

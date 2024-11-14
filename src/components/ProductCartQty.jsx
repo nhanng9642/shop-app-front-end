@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import {} from 'react-router-dom'
 import {
 	Card,
@@ -9,8 +9,9 @@ import {
 	Button,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../context/user";
-import { cartService } from "../utils";
+import { useUserContext } from "@/context/user";
+import { cartService } from "@/services";
+
 export const ProductCartQty = ({product, quantity}) => {
 	const {cart, setCart} = useUserContext(); 
 	return (

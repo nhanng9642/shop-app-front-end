@@ -8,17 +8,20 @@ import {
 	Typography,
 	Input,
 } from "@material-tailwind/react";
-import { useGlobalContext,signin } from "../context";
+
+import { useAuth } from "@/context/auth-context";
 import {useForm} from "react-hook-form";
-import { userServices } from "../utils";
+import { userServices } from "@/services";
 import {toast} from "react-hot-toast"
+
+// eslint-disable-next-line react/prop-types
 export function EditProfileDialog({open, setOpen}) {
-	const {register, handleSubmit, formState: {errors}} = useForm();
+	const {register, handleSubmit} = useForm();
 	const [preview, setPreview] = useState(null);
 	const [isUpdate, setIsUpdate] = useState(false)
 	
 	const imageInput = useRef(null);
-	const {user, dispatch} = useGlobalContext();
+	const {user, dispatch} = useAuth();
 	const handleOpen = () => setOpen((cur) => !cur);
 	const handleChangeImage = (e) => {
 		const file = e.target.files[0];
@@ -38,7 +41,7 @@ export function EditProfileDialog({open, setOpen}) {
 		if(res.status == "success"){
 			setOpen(false);
 			toast.success('Edit profile successfully');
-			dispatch(signin(res.data));
+			dispatch({type: "SIGNIN", payload: res.data});
 		}
 	}
 	return (

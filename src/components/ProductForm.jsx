@@ -4,17 +4,17 @@ import {
   Typography,
   Textarea,
 } from "@material-tailwind/react";
-import { useForm } from "react-hook-form";
 
-import { CategoryService } from "../utils/CategoryService";
-import ErrorMessage from "./ErrorMessage";
+import { useForm } from "react-hook-form";
+import { CategoryService, ProductService } from "@/services";
+import { ErrorMessage } from "@/components";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { ProductService } from "../utils/ProductService";
 import { useNavigate } from "react-router-dom";
 
 const imageDefault = "https://res.cloudinary.com/dv79err1w/image/upload/v1705988154/product/efwphbwmbnlwqbhau7pz.png?fbclid=IwAR1_hw5PdkO6EAzxOfDGh0-5uf1RlCceCpjAbC1fOW_x2J9wb70ZH-IsV-g";
 
+// eslint-disable-next-line react/prop-types
 export function ProductForm({ productId }) {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);

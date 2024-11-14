@@ -1,6 +1,7 @@
 import { Button,IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
+// eslint-disable-next-line react/prop-types
 export const CircularPagination = ({currentPage, totalPage,setCurrentPage}) => {
 		const getItemProps = (index) =>
 	({

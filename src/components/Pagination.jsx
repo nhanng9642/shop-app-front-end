@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import { IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
+// eslint-disable-next-line react/prop-types
 export function Pagination({ pageLimit = 10 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageOffset, setPageOffset] = React.useState(() => {
@@ -22,7 +23,7 @@ export function Pagination({ pageLimit = 10 }) {
 
   useEffect(() => {
     setSearchParams({ ...searchParams, page: pageOffset })
-  }, [pageOffset])
+  }, [pageOffset, searchParams, setSearchParams])
 
   useEffect(() => {
     setPageOffset(+searchParams.get("page") || 1)

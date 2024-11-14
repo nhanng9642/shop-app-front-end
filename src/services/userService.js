@@ -1,10 +1,10 @@
-import { API_URL,SUB_API_URL } from "./config";
+import { API_URL, SUB_API_URL } from "./config";
 import axios from "axios"
+
 export const userServices = {
     signin: async (data) => {
-        const res = await fetch(`${API_URL}/users/login`, {
+        const res = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -13,13 +13,17 @@ export const userServices = {
     
         const rs = await res.json();
         
+        if (!rs.success)
+            throw new Error(rs.message);
         return rs;
     },
-    signout: 123,
 
     getProfile: async () => {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${API_URL}/users/me`, {
+        if (!token) 
+            return null;
+
+        const res = await fetch(`${API_URL}/user/me`, {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -30,7 +34,7 @@ export const userServices = {
     },
 
     signup: async (data) => {  
-        const res = await fetch(`${API_URL}/users/signup`, {
+        const res = await fetch(`${API_URL}/auth/sign-up`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,11 +43,15 @@ export const userServices = {
         });
 
         const rs = await res.json();    
+
+        if (!rs.success)
+            throw new Error(rs.message);
+
         return rs;
     },
 
     forgotPassword: async (data) => {
-        const res = await fetch(`${API_URL}/users/forgot-password`, {
+        const res = await fetch(`${API_URL}/auth/reset-password`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +68,7 @@ export const userServices = {
     },
 
     resetPassword: async (data, token) => {
-        const res = await fetch(`${API_URL}/users/reset-password/${token}`, {
+        const res = await fetch(`${API_URL}/auth/recovery-password/${token}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,6 +82,7 @@ export const userServices = {
         }
         return rs;
     },
+
     updateMe: async (data) => {
         const token = localStorage.getItem('token');
         
@@ -92,9 +101,10 @@ export const userServices = {
         })
         return response.data;
     },
+
     changePassword: async (data) => {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${API_URL}/users/update-password`,{
+        const res = await fetch(`${API_URL}/user/change-password`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,6 +115,7 @@ export const userServices = {
         const rs = await res.json();
         return rs;
     },
+    
     payment: async () => {
         const token = localStorage.getItem('token'); 
         const res = await fetch(`${SUB_API_URL}/accounts/payment`, {
@@ -116,5 +127,14 @@ export const userServices = {
         });
         const rs = await res.json();
         return rs; 
+    },
+
+    extractInputError: (message) => {
+        let inputError = message.split(' ')[0].toLowerCase();
+
+        if (inputError === 'first') inputError = 'firstName';
+        else if (inputError === 'last') inputError = 'lastName';
+
+        return inputError;
     }
 }

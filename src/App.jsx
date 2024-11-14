@@ -1,6 +1,6 @@
 import { Admin, Auth, User } from "./layouts";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AdminRoute, AuthRoute, GuestRoute } from "./utils";
+import { AdminRoute, AuthRoute, GuestRoute } from "./context/auth-context";
 
 import { Dashboard, Category, Product, Account, EditCategory, AddCategory, EditAccount } from "./pages/admin"
 

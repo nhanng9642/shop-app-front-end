@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/solid";
 
 import { useState, useEffect } from 'react';
-import { StatisticsService } from '../../utils/StatisticsService';
+import { StatisticsService } from '@/services';
 
 const columnChart = {
   type: "bar",

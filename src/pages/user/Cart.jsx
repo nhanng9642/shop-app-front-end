@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { useUserContext } from "../../context/user";
+import { useUserContext } from "@/context/user";
 import { Typography,Button } from "@material-tailwind/react";
-import { ProductService, cartService, userServices} from "../../utils";
-import { ProductCartQty } from "../../components";
+import { ProductService, cartService, userServices} from "@/services";
+import { ProductCartQty } from "@/components";
 import {toast} from "react-hot-toast"
+
 export const Cart = () => {
 	const [books, setBooks] = useState([]);
 	const {cart , setCart} = useUserContext();
@@ -16,7 +17,7 @@ export const Cart = () => {
 			setBooks(products);
 		}
 		fetchData();
-	}, []);
+	}, [cart]);
 		
 	const handlePayment = async () => {
 		const res = await userServices.payment();

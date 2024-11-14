@@ -1,178 +1,176 @@
 import {
   Input,
-  Checkbox,
   Button,
-  Typography,
+  Typography
 } from "@material-tailwind/react";
+
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import ErrorMessage from "../../components/ErrorMessage";
-import { userServices } from "../../utils";
-import { useState } from "react";
+import {ErrorMessage} from "@/components";
+import { userServices } from "@/services";
 import { toast } from "react-hot-toast";
 
 export function SignUp() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const [error, setError] = useState(false);
+  const { register, handleSubmit, setError, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    const res = await userServices.signup(data);
-    console.log(res)
-
-    if (res.status === 'success') {
-      toast.success('Sign up successfully!')
-      navigate('/auth/sign-in');
-    } else {
-      setError(res.message);
-    }
+    toast.promise(
+        userServices.signup(data),
+        {
+            loading: 'Signing up...',
+            success: (data) => {
+                navigate('/auth/sign-in');
+                return data.message;
+            },
+            error: ({message}) => {
+                const inputError = userServices.extractInputError(message);
+                setError(inputError, {type: 'manual', message: message}, {shouldFocus: true});
+                return message;
+            }
+        }
+    )
   }
 
-  return (
+return (
     <section className="flex bg-gray-100 h-screen">
-      <div className="w-1/3 bg-white flex flex-col rounded-lg shadow-lg h-fit
-            items-center justify-center m-auto p-5">
-        <div className="text-center w-full">
-          <Typography variant="h2" className="font-bold mb-2">
-            Sign Up
-          </Typography>
+        <div className="w-1/3 bg-white flex flex-col rounded-lg shadow-lg h-fit
+                    items-center justify-center m-auto p-5">
+            <div className="text-center w-full">
+                <Typography variant="h2" className="font-bold mb-2">
+                    Sign Up
+                </Typography>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)}
+                className="mt-4 mb-2 mx-auto w-full">
+                <div className="mb-6 flex flex-col">
+                    <Input 
+                        autoFocus
+                        label="Username"
+                        variant="outlined"
+                        error={errors.username}
+                        {...register('username', {
+                            required: 'Enter username'
+                        })}
+                    />
+                    {errors.username && <ErrorMessage mess={errors.username.message} />}
+                </div>
+
+                <div className="mb-6 flex flex-col gap-6">
+                    <div className="flex gap-4">
+                        <div>
+                            <Input 
+                                label="First name"
+                                variant="outlined"
+                                error={errors.firstName}
+                                {...register('firstName', {
+                                required: 'Enter first name',
+                                validate: (val) => {
+                                    const pattern = /^[a-zA-Z]+$/;
+                                    if (!pattern.test(val.trim())) {
+                                        return "First name should only contain letters";
+                                    }
+                                }
+                            })}
+                            />
+                            {errors.firstName && <ErrorMessage mess={errors.firstName.message} />}
+                        </div>
+                        
+                        <div>
+                            <Input 
+                                label="Last name (optional)"
+                                variant="outlined"
+                                error={errors.lastName}
+                                {...register('lastName', {
+                                validate: (val) => {
+                                    const pattern = /^[a-zA-Z]*$/;
+                                    if (!pattern.test(val.trim())) {
+                                        return "Last name should only contain letters";
+                                    }
+                                }
+                            })}
+                            />
+                            
+                            {errors.lastName && <ErrorMessage mess={errors.lastName.message} />}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mb-6 flex flex-col">
+                    <Input 
+                        label="Email"
+                        variant="outlined"
+                        error={errors.email}
+                        {...register('email', {
+                            required: 'Enter email',
+                            validate: (val) => {
+                                const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+                                if (!pattern.test(val.trim())) {
+                                    return "Enter a valid email";
+                                }
+                            }
+                        })}
+                    />
+                    {errors.email && <ErrorMessage mess={errors.email.message} />}
+                </div>
+
+                <div className="mb-6 mt-4">
+                    <Input
+                        label="Password"
+                        variant="outlined"
+                        error={errors.password}
+                        type="password"
+                        {...register('password', {
+                        required: 'Enter password',
+                        minLength: {
+                            value: 6,
+                            message: "Your password must be at least 6 characters",
+                        }
+                    })}
+                    />
+                    {errors.password && <ErrorMessage mess={errors.password.message} />}
+                </div>
+
+                <div className="mb-6 flex flex-col mt-4">
+                    <Input
+                        label="Confirm Password"
+                        error={errors.confirm_password}
+                        variant="outlined"
+                        {...register("confirm_password", {
+                            required: "Enter confirm password",
+                            validate: (val) => {
+                                if (watch('password') != val) {
+                                    return "Your passwords do not match";
+                                }
+                            },
+                        })}
+                        type="password"
+                    />
+                    {errors.confirm_password && <ErrorMessage mess={errors.confirm_password.message} />}
+                </div>
+                
+                <Button className="mt-2 font-bold text-base" fullWidth type="submit">
+                    Register Now
+                </Button>
+                
+                <hr className="my-4 border-gray-300 w-full" />
+
+                <div className="mt-4 text-center">
+                    <p className="opacity-70 inline">
+                        Already have an account?
+                    </p>
+                    <Link to="/auth/sign-in" 
+                        className="inline pl-2 font-bold text-blue-700 text-lg
+                                   hover:text-blue-900 hover:underline">
+                            Log in
+                    </Link>
+                </div>
+            </form>
+
         </div>
-
-        <form onSubmit={handleSubmit(onSubmit)}
-          className="mt-4 mb-2 mx-auto w-full">
-          <div className="mb-3 flex flex-col gap-6">
-            <Typography variant="small" color="blue-gray"
-              className="-mb-5 font-medium">
-              Full Name
-            </Typography>
-            <Input {...register('name', {
-              required: 'Please enter your full name',
-              validate: (val) => {
-                const pattern = /^[a-zA-Z]+(\s[a-zA-Z]+)+$/;
-                if (!pattern.test(val.trim())) {
-                  return "Your name must be at least 2 words, and only contain letters";
-                }
-              }
-            })}
-              placeholder="Your Name" autoFocus
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-
-            {errors.name && <ErrorMessage mess={errors.name.message} />}
-          </div>
-
-          <div className="mb-1 flex flex-col gap-6">
-            <Typography variant="small" color="blue-gray"
-              className="-mb-5 font-medium">
-              Email
-            </Typography>
-            <Input onFocus={() => setError(false)}
-              {...register('email', {
-                required: 'Please enter your email',
-                validate: (val) => {
-                  const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
-                  if (!pattern.test(val.trim())) {
-                    return "Please enter a valid email";
-                  }
-                }
-              })}
-              placeholder="name@mail.com"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            {errors.email && <ErrorMessage mess={errors.email.message} />}
-            {error && <ErrorMessage mess={error} />}
-          </div>
-
-          <div className="mb-1 flex flex-col gap-6 mt-4">
-            <Typography variant="small" color="blue-gray"
-              className="-mb-5 font-medium">
-              Password
-            </Typography>
-            <Input {...register('password', {
-              required: 'Please enter your password',
-              minLength: {
-                value: 6,
-                message: "Your password must be at least 6 characters",
-              }
-            })}
-              type="password"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            {errors.password && <ErrorMessage mess={errors.password.message} />}
-          </div>
-
-          <div className="mb-1 flex flex-col gap-6 mt-4">
-            <Typography variant="small" color="blue-gray"
-              className="-mb-5 font-medium">
-              Confirm Password
-            </Typography>
-            <Input
-              {...register("confirm_password", {
-                required: "Please confirm your password",
-                validate: (val) => {
-                  if (watch('password') != val) {
-                    return "Your passwords do no match";
-                  }
-                },
-              })}
-              type="password"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-            {errors.confirm_password && <ErrorMessage mess={errors.confirm_password.message} />}
-          </div>
-
-          <div className="mt-2">
-          </div>
-
-          <Checkbox
-            {...register('agree', {
-              required: 'Please agree to our terms and conditions',
-            })
-            }
-            label={
-              <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center justify-start font-medium"
-              >
-                I agree the&nbsp;
-                <a href="#"
-                  className="font-normal text-black transition-colors hover:text-gray-900 underline"
-                >
-                  Terms and Conditions
-                </a>
-              </Typography>
-            }
-            containerProps={{ className: "-ml-2.5" }}
-          />
-          <div className="mb-4">
-          </div>
-          {errors.agree && <ErrorMessage mess={errors.agree.message} />}
-          <Button className="mt-6" fullWidth type="submit">
-            Register Now
-          </Button>
-
-          <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
-            Already have an account?
-            <Link to="/auth/sign-in" className="text-gray-900 ml-1">Sign in</Link>
-          </Typography>
-        </form>
-
-      </div>
     </section>
-  );
+);
 }
 
 export default SignUp;

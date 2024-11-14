@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { Typography, Input, Button } from '@material-tailwind/react';
 import { toast } from 'react-hot-toast';
 
-import ErrorMessage from "../../components/ErrorMessage";
-import { userServices } from "../../utils";
+import { ErrorMessage } from "@/components";
+import { userServices } from "@/services";
 
 export function ForgotPassword() {
   const { register, handleSubmit, formState: { errors } } = useForm();

@@ -1,7 +1,8 @@
-import {useState, useEffect} from "react";
-import {useParams,Link } from "react-router-dom";
+import { useState, useEffect} from "react";
+import { useParams, Link } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
-import { ProductService } from "../../utils";
+import { ProductService } from "@/services";
+
 export const ProductView = () => {
 	const {id} = useParams();
 	const [product, setProduct] = useState({image:''});

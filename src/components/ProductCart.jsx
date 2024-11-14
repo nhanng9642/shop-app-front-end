@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Card,
   CardHeader,
@@ -7,10 +8,11 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { cartService } from "../utils";
-import { useUserContext } from "../context/user";
+import { cartService } from "@/services";
+import { useUserContext } from "@/context/user";
+
 export const ProductCart = ({book}) => {
-	const {cart, setCart} = useUserContext();
+	const {setCart} = useUserContext();
 	return (
 		<Card className="max-w-[300px] overflow-hidden rounded-none">
 			<Link to={`product-views/${book._id}`}>

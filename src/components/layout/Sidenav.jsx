@@ -4,6 +4,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+// eslint-disable-next-line react/prop-types
 export function Sidenav({ routes }) {
   return (
     <aside

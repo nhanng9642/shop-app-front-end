@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { Typography, Input, Button } from '@material-tailwind/react';
 import { toast } from 'react-hot-toast';
 
-import ErrorMessage from "../../components/ErrorMessage";
-import { userServices } from "../../utils";
+import { ErrorMessage } from "@/components";
+import { userServices } from "@/services";
 
 export function ResetPassword() {
   const [tokenReset, setTokenReset] = useState('')
@@ -20,7 +20,7 @@ export function ResetPassword() {
       userServices.resetPassword(data, tokenReset),
       {
         loading: 'Loading...',
-        success: (data) => {
+        success: () => {
           navigate('/auth/sign-in');
          return  "Reset password successfully!"
         },
@@ -31,7 +31,7 @@ export function ResetPassword() {
 
   useEffect(() => {
     setTokenReset(searchParams.get('token'))
-  }, [])
+  }, [searchParams])
 
   return (
     <section className="flex bg-gray-100 min-h-screen">

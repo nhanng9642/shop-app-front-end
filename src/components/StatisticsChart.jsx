@@ -2,15 +2,13 @@ import {
     Card,
     CardHeader,
     CardBody,
-    CardFooter,
     Typography,
 } from "@material-tailwind/react";
 
 import Chart from "react-apexcharts";
 
-
-
-export function StatisticsChart({ chart, title, description }) {
+// eslint-disable-next-line react/prop-types
+export function StatisticsChart({ chart, title }) {
     return (
         <Card className="border border-blue-gray-100 shadow-sm">
             <CardHeader variant="gradient" color="white" floated={false} shadow={false}>

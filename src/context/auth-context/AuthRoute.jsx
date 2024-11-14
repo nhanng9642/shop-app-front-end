@@ -1,11 +1,12 @@
-import { useGlobalContext } from '../context'
-import { Navigate } from 'react-router-dom'
-import Loading from '../pages/Loading';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from './useAuth';
+import Loading from '../../pages/Loading';
 
+// eslint-disable-next-line react/prop-types
 export const AuthRoute = ({ children }) => {
-    const { isInitalize, isAuthenticated } = useGlobalContext();
+    const { isInit, isAuthenticated } = useAuth();
 
-    if (!isInitalize) {
+    if (!isInit) {
         return <Loading />
     }
 

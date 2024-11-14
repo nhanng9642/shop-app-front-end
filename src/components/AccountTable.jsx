@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
     Card,
@@ -8,9 +8,8 @@ import {
     CardFooter,
 } from '@material-tailwind/react'
 
-import { AccountService } from '../utils/AccountService'
-import { Action } from './Action';
-import { Pagination } from './Pagination';
+import { AccountService } from '@/services'
+import { Action, Pagination } from '@/components'
 
 const TABLE_HEAD = ["#", "User ID", "Balance", "Action"];
 const ITEMS_PER_PAGE = 7
@@ -38,7 +37,7 @@ export function AccountTable() {
         }
 
         fetchTableRows();
-    }, [page, forceUpdateFlag, pageLimit])
+    }, [page, forceUpdateFlag, pageLimit, setSearchParams, searchParams])
 
 
     return (

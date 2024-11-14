@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {useForm} from "react-hook-form"
 import { toast } from "react-hot-toast";
-import { userServices } from "../utils";
-import { useGlobalContext, signin} from "../context";
+import { userServices } from "@/services";
+import { useAuth} from "@/context/auth-context";
 import {
 	Button,
 	Dialog,
@@ -12,12 +12,14 @@ import {
 	Typography,
 	Input,
 } from "@material-tailwind/react"; 
-import ErrorMessage from "./ErrorMessage";
+import { ErrorMessage } from "@/components";
+
+// eslint-disable-next-line react/prop-types
 export function ChangePassDialog({open, setOpen}) {
-	const {register, handleSubmit, formState: {errors}} = useForm();
+	const {register, handleSubmit} = useForm();
 	const [err, setErr] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
-	const {dispatch} = useGlobalContext();
+	const {dispatch} = useAuth();
 
 	const handleOpen = () => setOpen((cur) => !cur);
 	
@@ -28,7 +30,7 @@ export function ChangePassDialog({open, setOpen}) {
 			setOpen(false);
 			toast.success('Change password successfully');
             localStorage.setItem('token', res.token);
-            dispatch(signin(res.data));
+            dispatch({type: "SIGNIN", payload: res.data});
 		}else {
 			setErr(true);
 			setIsUpdate(false);

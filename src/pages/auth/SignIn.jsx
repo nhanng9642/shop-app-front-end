@@ -1,4 +1,4 @@
-import { API_URL } from "../../utils/config";
+import { API_URL } from "@/services/config";
 
 import { useForm } from "react-hook-form";
 import {
@@ -8,15 +8,15 @@ import {
 } from "@material-tailwind/react";
 
 import { toast } from "react-hot-toast";
-import { useGlobalContext, signin } from '../../context';
+import { useAuth } from '@/context/auth-context';
 import { Link, useSearchParams } from "react-router-dom";
 
-import { userServices } from "../../utils";
+import { userServices } from "@/services";
 import { useState, useEffect } from "react";
-import ErrorMessage from "../../components/ErrorMessage";
+import { ErrorMessage } from "@/components";
 
 export function SignIn() {
-    const { state, dispatch } = useGlobalContext();
+    const { dispatch } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [error, setError] = useState(false);
     const [searchParams] = useSearchParams();
@@ -26,7 +26,7 @@ export function SignIn() {
 
         if (res.status === 'success') {
             const user = res.data;
-            dispatch(signin(user));
+            dispatch({ type: 'LOGIN', payload: user });
             toast.success('Sign in successfully');
             localStorage.setItem('token', res.token);
         } else {

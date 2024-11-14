@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StatisticsService } from "../utils/StatisticsService"
+import { StatisticsService } from "@/services"
 import {
   Card,
   CardHeader,

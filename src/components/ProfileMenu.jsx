@@ -7,11 +7,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useState } from "react";
-import { useGlobalContext } from "../context";
-import { ChangePassDialog } from "./ChangePassDialog";
-import { EditProfileDialog } from "./EditProfileDialog";
+import { useAuth } from "@/context/auth-context";
+import { ChangePassDialog, EditProfileDialog } from "@/components";
+
 export function ProfileMenu() {
-	const {user} = useGlobalContext();
+	const {user} = useAuth();
 	const [openPassDialog, setOpenPassDialog] = useState(false);
 	const [openProfileDialog, setOpenProfileDialog] = useState(false);
 	const handleSignout = () => {

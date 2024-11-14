@@ -12,14 +12,15 @@ import {
 } from "@material-tailwind/react";
 import {ShoppingCartIcon,MagnifyingGlassIcon} from "@heroicons/react/24/solid";
 import {useNavigate,Link} from "react-router-dom";
-import { ProductService } from "../../utils";
-import { useUserContext } from "../../context/user";
-import { ProfileMenu } from "../ProfileMenu";
+import { ProductService } from "@/services";
+import { useUserContext } from "@/context/user";
+import { ProfileMenu } from "@/components";
+
 export const HeaderUser = () => {
     const navigate = useNavigate();
     const [searchString, setSearchString] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-	const {cart, setCart} = useUserContext();
+	const {cart} = useUserContext();
     useEffect(() => {
 		const fetchSearchProduct = async () => {
 			if(searchString.length !== 0){
@@ -40,7 +41,7 @@ export const HeaderUser = () => {
 						as="h5"
 						className="mx-2 cursor-pointer text-2xl py-1.5 font-bold text-white tracking-wider grow"
                     >
-                      	HOME
+                    HOME
                     </Typography>
                 </Link>
                 <div className="flex items-center justify-between flex-nowrap">

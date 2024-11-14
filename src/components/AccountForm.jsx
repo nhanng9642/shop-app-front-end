@@ -1,14 +1,13 @@
-import React from 'react'
+/* eslint-disable react/prop-types */
 import {
   Input,
   Button,
   Typography,
-  Textarea,
 } from "@material-tailwind/react";
-import { useForm } from "react-hook-form";
 
-import { AccountService } from "../utils/AccountService";
-import ErrorMessage from "./ErrorMessage";
+import { useForm } from "react-hook-form";
+import { AccountService } from "@/services";
+import { ErrorMessage } from "@/components";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -69,7 +68,7 @@ export function AccountForm
     if (accountID) {
       fetchProduct(accountID);
     }
-  }, [accountID, reset])
+  }, [accountID, navigate, reset])
 
   return (
     <div className='min-h-[400px]'>
@@ -98,8 +97,6 @@ export function AccountForm
               />
               {errors.name && <ErrorMessage mess={errors.name.message} />}
             </div>
-
-
 
             <div className="mb-1 flex flex-col gap-6 mt-4">
               <Typography variant="small" color="blue-gray"

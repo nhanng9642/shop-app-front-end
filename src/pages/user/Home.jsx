@@ -1,8 +1,9 @@
 import { useEffect, useState,memo } from "react";
-import banner from '../../../public/img/Bookshop.gif';
+import banner from '/img/Bookshop.gif';
 import { Typography } from "@material-tailwind/react";
-import { ProductService, CategoryService } from "../../utils";
-import { ProductCart, CircularPagination } from "../../components";
+import { ProductService, CategoryService } from "@/services";
+import { ProductCart, CircularPagination } from "@/components";
+
 const filterPrices = [
 	{name:'All', value:''},
 	{name:'Under 50.000', value:'price[lt]=50000'},
@@ -11,14 +12,17 @@ const filterPrices = [
 	{name:'From 200.000 - 500.000', value:'price[gte]=200000&price[lte]=500000'},
 	{name:'Over 500.000', value:'price[gt]=500000'},
 ]
+
 const filterCategories = [{name: 'All', value:''}];
 const filterSortPrice = [
 	{name: 'Ascending', value: 'sort=price'},
 	{name: 'Descending', value: 'sort=-price'},
 ];
 const limitProduct = 8;
+
+// eslint-disable-next-line react/display-name
 export const Home = memo(() => {
-	const [categories, setCategories] = useState([]);
+	const [, setCategories] = useState([]);
 	const [books, setBooks] = useState([]);
 	const [topLowerStock, setTopLowerStock] = useState([]);
 	const [categoryQuery, setCategoryQuery] = useState(filterCategories[0].value);

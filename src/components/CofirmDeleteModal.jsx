@@ -7,10 +7,11 @@ import {
     DialogFooter,
     IconButton,
 } from "@material-tailwind/react";
-import { ProductService } from "../utils/ProductService";
+
 import { toast } from "react-hot-toast";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
+// eslint-disable-next-line react/prop-types
 export function ConfirmDeleteModal({ id, forceUpdate, deleteRow }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(!open);
@@ -22,7 +23,7 @@ export function ConfirmDeleteModal({ id, forceUpdate, deleteRow }) {
             deleteRow(id),
             {
                 loading: 'Deleting...',
-                success: (data) => {
+                success: () => {
                     forceUpdate();
                     return 'Deleted successfully';
                 },

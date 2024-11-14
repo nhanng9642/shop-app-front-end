@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 import {
     Card,
     CardHeader,
     CardBody,
     Typography,
 } from "@material-tailwind/react";
-export function StatisticsCard({ color, icon, title, value }) {
+
+export function StatisticsCard({ icon, title, value }) {
     return (
         <Card className="border border-blue-gray-100 shadow-sm">
             <CardHeader

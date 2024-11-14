@@ -10,10 +10,10 @@ import {
 } from "@material-tailwind/react";
 import { Link, useSearchParams } from "react-router-dom";
 
-import { ProductService } from "../utils/ProductService"
-import { Pagination } from './Pagination'
+import { ProductService } from "@/services";
+import { Action, Pagination } from '@/components'
 const TABLE_HEAD = ["Book", "Author", "Inventory", "Price", "Genre", "Description", "Actions"];
-import { Action } from './Action';
+
 
 export function PaginationProducts() {
     const [tableRows, setTableRows] = useState([]);

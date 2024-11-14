@@ -1,8 +1,9 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { cartService } from '../utils';
+import { cartService } from '../services/CartService';
 
 export const UserContext = createContext(); 
 
+// eslint-disable-next-line react/prop-types
 export const UserContextProvider = ({children}) => {
 	const [cart, setCart] = useState([]);
 	useEffect(() => {

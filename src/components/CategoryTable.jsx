@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
     Card,
     CardHeader,
@@ -7,8 +7,8 @@ import {
     Button,
 } from '@material-tailwind/react'
 
-import { CategoryService } from '../utils/CategoryService'
-import { Action } from './Action';
+import { CategoryService } from '@/services'
+import { Action } from '@/components';
 import { Link } from 'react-router-dom';
 
 const TABLE_HEAD = ["#", "Name", "Description", "Action"];

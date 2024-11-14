@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Input,
   Button,
@@ -7,12 +6,13 @@ import {
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 
-import { CategoryService } from "../utils/CategoryService";
-import ErrorMessage from "./ErrorMessage";
+import { CategoryService } from "@/services";
+import {ErrorMessage} from "@/components";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line react/prop-types
 export function CategoryForm({ categoryID }) {
   const navigate = useNavigate();
   const [category, setCategory] = useState(null);
