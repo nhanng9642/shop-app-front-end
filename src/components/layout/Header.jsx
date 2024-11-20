@@ -46,9 +46,6 @@ export function Header() {
               {page || "Home"}
             </Typography>
           </Breadcrumbs>
-          <Typography variant="h6" color="blue-gray">
-            {page}
-          </Typography>
         </div>
 
         <div className="flex items-center border p-4 rounded-xl bg-white ">
@@ -58,7 +55,7 @@ export function Header() {
               color="blue-gray"
               className="font-normal mx-4 font-bold"
             >
-              {user.name}
+              {user.username || "User"}
             </Typography>
 
             <Button color="red" onClick={handleLogout}>Log out</Button>

@@ -1,133 +1,80 @@
-import { useState, useEffect } from 'react'
 import {
     Card,
-    CardHeader,
-    Typography,
     CardBody,
-    Button,
 } from '@material-tailwind/react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom';
 
 import { CategoryService } from '@/services'
-import { Action } from '@/components';
-import { Link } from 'react-router-dom';
+import {  MyCardFooter, MyCardHeader, TableBody, TableHeader } from '@/components';
 
 const TABLE_HEAD = ["#", "Name", "Description", "Action"];
+const properties = ["id", "categoryName", "description"];
 
 export function CategoryTable() {
-    const [tableRows, setTableRows] = useState([]);
-    const [forceUpdateFlag, setForceUpdateFlag] = useState(false);
-    const manualRerender = () => {
-        setForceUpdateFlag(prevFlag => !prevFlag);
+    const [rows, setRows] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
+    const [param, setParam] = useSearchParams({ page: 1, size: 7 });
+    const [page, setPage] = useState(Number(param.get("page")) || 1);
+    const size = param.get("size") || 8;
+
+    const handleDelete = async (id) => {
+        setRows(prevRows => {
+            const newRows = prevRows.filter(row => row.id == id);
+            
+            if (prevRows.length === 1) setPage(page - 1);
+            return newRows;
+        });
     };
+
+    const updatePage = (page) => {
+        setPage(page);
+        setParam({page, size});
+    }
 
     useEffect(() => {
         const fetchTableRows = async () => {
-            const data = await CategoryService.getCategories();
-            setTableRows(data);
+            const {pagination, data} = await CategoryService.getCategories(page - 1, size);
+            const {totalPages, pageSize, currentPage} = pagination;
+
+            if (page > totalPages){
+                setParam({ page: totalPages, size: pageSize });
+                setPage(totalPages);
+                setTotalPages(totalPages);
+                return;
+            }
+
+            if (size != pageSize || page != currentPage + 1) 
+                setParam({ page: currentPage + 1, size: pageSize });
+
+            setTotalPages(totalPages)
+            setRows(data);
         }
+
         fetchTableRows();
-    }, [forceUpdateFlag])
+    }, [page, setParam, size])
 
     return (
         <Card className="h-full w-full mt-1">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            Category
-                        </Typography>
+            <MyCardHeader title="Category" />
 
-                    </div>
-
-                    <Link to="/admin/category/add">
-                        <Button color="green" >Add Category</Button>
-                    </Link>
-                </div>
-            </CardHeader>
-
-            <CardBody className="px-0 -mt-2 ">
+            <CardBody className="px-0 -mt-2">
                 <table className="w-full table-auto text-left">
-                    <thead>
-                        <tr>
-                            {TABLE_HEAD.map((head) => (
-                                <th
-                                    key={head}
-                                    className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-3"
-                                >
-                                    <Typography
-                                        variant="small"
-                                        color="blue-gray"
-                                        className="font-normal leading-none opacity-70"
-                                    >
-                                        {head}
-                                    </Typography>
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableRows.map(
-                            (
-                                {
-                                    _id,
-                                    name,
-                                    description,
-                                },
-                                index,
-                            ) => {
-                                const isLast = index === tableRows.length - 1;
-                                const classes = isLast
-                                    ? "p-3"
-                                    : "p-3 border-b border-blue-gray-50";
+                    <TableHeader headers={TABLE_HEAD} />
 
-                                return (
-                                    <tr key={_id}>
-                                        <td className={classes}>
-                                            <div className="flex items-center gap-3">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-bold"
-                                                >
-                                                    {index + 1}
-                                                </Typography>
-                                            </div>
-                                        </td>
-
-                                        <td className={classes}>
-                                            <div className="flex items-center gap-3">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-bold"
-                                                >
-                                                    {name}
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className={classes} >
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {description}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Action routeEdit={`/admin/category/`}
-                                                _id={_id}
-                                                manualRerender={manualRerender}
-                                                deleteRow={CategoryService.deleteCategory}
-                                            />
-                                        </td>
-                                    </tr>
-                                );
-                            },
-                        )}
-                    </tbody>
+                    <TableBody
+                        data={rows}
+                        properties={properties}
+                        handleDelete={handleDelete}
+                        deleteRow={CategoryService.deleteCategory}
+                    />
                 </table>
             </CardBody>
+
+            <MyCardFooter 
+                totalPages={totalPages} 
+                page={page} 
+                updatePage={updatePage} />
         </Card>
     );
 }

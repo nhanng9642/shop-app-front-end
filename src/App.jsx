@@ -4,7 +4,7 @@ import { AdminRoute, AuthRoute, GuestRoute } from "./context/auth-context";
 
 import { Dashboard, Category, Product, Account, EditCategory, AddCategory, EditAccount } from "./pages/admin"
 
-import NotFound from "./pages/NotFound";
+import NotFound from "./pages/status/NotFound";
 import { Toaster } from "react-hot-toast";
 import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
@@ -52,6 +52,7 @@ function App() {
         <Route path="/" element={<Navigate to="/auth/sign-in" />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
+      
       <Toaster
         position="top-center"
         reverseOrder={false}

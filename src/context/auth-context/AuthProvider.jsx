@@ -2,13 +2,13 @@ import { useEffect, useReducer } from "react";
 import { userServices } from "@/services";
 import { AuthContext } from "./AuthContext";
 
-const INIT = "INIT", LOGIN = "LOGIN", LOGOUT = "LOGOUT";
+const INIT = "INIT", SIGNIN = "SIGN_IN", LOGOUT = "LOG_OUT";
 
 const reducer = (state, action) => {
     switch (action.type) {
         case INIT:
             return { ...state, isInit: true, isAuthenticated: false, user: null };
-        case LOGIN:
+        case SIGNIN:
             return { ...state, isInit: true, isAuthenticated: true, user: action.payload };
         case LOGOUT:
             return { ...state, isInit: true, isAuthenticated: false, user: null };
@@ -29,12 +29,12 @@ export function AuthProvider({children}) {
 
     useEffect(() => {
         const authen = async () => {
-            const token = localStorage.getItem("access_token");
+            const token = localStorage.getItem("token");
 
             if (token) {
                 try {
-                    const { user } = await userServices.getProfile();
-                    dispatch({ type: LOGIN, payload: user });
+                    const { data } = await userServices.getProfile();
+                    dispatch({ type: SIGNIN, payload: data });
                 } catch {
                     dispatch({ type: INIT });
                 }

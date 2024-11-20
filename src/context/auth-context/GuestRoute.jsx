@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
-import Loading from '../../pages/Loading';
+import { Loading } from "@/pages/status";
 
 export function GuestRoute({ children }) {
     const { isInit, isAuthenticated, user } = useAuth();

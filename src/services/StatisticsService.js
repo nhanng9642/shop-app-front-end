@@ -1,10 +1,10 @@
-import { API_URL, SUB_API_URL } from './config';
+import { API_URL } from './config';
 
 
 export const StatisticsService = {
     getTotalRevenue: async () => {
         const token = localStorage.getItem('token');
-        const link = `${SUB_API_URL}/statistics/total-revenue`;
+        const link = `${API_URL}/statistic/total-revenue`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -15,18 +15,18 @@ export const StatisticsService = {
 
     getTotalOrders: async () => {
         const token = localStorage.getItem('token');
-        const link = `${SUB_API_URL}/statistics/total-orders`;
+        const link = `${API_URL}/statistic/total-order`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
-        return data;
+        return data.data;
     },
 
     getTotalProducts: async () => {
         const token = localStorage.getItem('token');
-        const link = `${API_URL}/books/total-product`;
+        const link = `${API_URL}/statistic/total-book`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -37,7 +37,7 @@ export const StatisticsService = {
 
     getTotalUsers: async () => {
         const token = localStorage.getItem('token');
-        const link = `${API_URL}/users/total-users`;
+        const link = `${API_URL}/statistic/total-user`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -46,9 +46,9 @@ export const StatisticsService = {
         return data.data;
     },
 
-    getTopProducts: async () => {
+    getTopProducts: async (size) => {
         const token = localStorage.getItem('token');
-        const link = `${SUB_API_URL}/statistics/top-best-selling`;
+        const link = `${API_URL}/statistic/best-selling-books?size=${size}`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -59,7 +59,7 @@ export const StatisticsService = {
 
     getMonthlyRevenue: async () => {
         const token = localStorage.getItem('token');
-        const link = `${SUB_API_URL}/statistics/monthly-revenue`;
+        const link = `${API_URL}/statistic/monthly-revenue`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -70,7 +70,7 @@ export const StatisticsService = {
 
     getTopLowerBooks: async () => {
         const token = localStorage.getItem('token');
-        const link = `${API_URL}/books/top-lower?limit=5&sort=inventory`;
+        const link = `${API_URL}/book?size=5&sort=asc`;
         const response = await fetch(link, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }

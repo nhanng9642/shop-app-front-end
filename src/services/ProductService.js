@@ -5,19 +5,20 @@ export const ProductService = {
     getProducts: async (page = 1, limit = 7) => {
         const token = localStorage.getItem('token');
 
-        const response = await fetch(`${API_URL}/books?page=${page}&limit=${limit}`, {
+        const response = await fetch(`${API_URL}/book?page=${page}&size=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
-        const data = await response.json();
-        return data;
+        const res = await response.json();
+        return res;
     },
+
     getProductsWithFilter: async (query) => {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/books?${query}`, {
+        const response = await fetch(`${API_URL}/book?${query}`, {
             method: 'GET', 
             headers: {
                 'Content-Type': 'application/json',
@@ -28,9 +29,10 @@ export const ProductService = {
         const data = await response.json();
         return data;
     },
+
     getLowerStockProducts: async (query) => {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/books/top-lower?${query}`, {
+        const response = await fetch(`${API_URL}/book?${query}`, {
             method: 'GET', 
             headers: {
                 'Content-Type': 'application/json',
@@ -40,8 +42,8 @@ export const ProductService = {
         });
         const data = await response.json();
         return data;
-    }
-    ,
+    },
+
     addProduct: async (product) => {
         const token = localStorage.getItem('token');
 
@@ -58,7 +60,7 @@ export const ProductService = {
         formData.append('categoryID', product.categoryID);
         formData.append('inventory', product.inventory);
 
-        const response = await axios.post(`${API_URL}/books`, formData, {
+        const response = await axios.post(`${API_URL}/book`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
@@ -83,7 +85,7 @@ export const ProductService = {
         formData.append('categoryID', product.categoryID);
         formData.append('inventory', product.inventory);
 
-        const response = await axios.patch(`${API_URL}/books/${product._id}`, formData, {
+        const response = await axios.patch(`${API_URL}/book/${product._id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
@@ -95,7 +97,7 @@ export const ProductService = {
     deleteProduct: async (id) => {
         const token = localStorage.getItem('token');
 
-        const response = await fetch(`${API_URL}/books/${id}`, {
+        const response = await fetch(`${API_URL}/book/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +111,7 @@ export const ProductService = {
     getProduct: async (id) => {
         const token = localStorage.getItem('token');
 
-        const response = await fetch(`${API_URL}/books/${id}`, {
+        const response = await fetch(`${API_URL}/book/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

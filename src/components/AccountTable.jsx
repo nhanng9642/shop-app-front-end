@@ -9,7 +9,7 @@ import {
 } from '@material-tailwind/react'
 
 import { AccountService } from '@/services'
-import { Action, Pagination } from '@/components'
+import { Action, MyCardFooter } from '@/components'
 
 const TABLE_HEAD = ["#", "User ID", "Balance", "Action"];
 const ITEMS_PER_PAGE = 7
@@ -48,7 +48,6 @@ export function AccountTable() {
                         <Typography variant="h5" color="blue-gray">
                             Account
                         </Typography>
-
                     </div>
                 </div>
             </CardHeader>
@@ -123,7 +122,7 @@ export function AccountTable() {
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Action routeEdit={`/admin/account/`}
+                                            <Action route={`/admin/account/`}
                                                 _id={_id}
                                                 manualRerender={manualRerender}
                                                 deleteRow={AccountService.deleteAccount}
@@ -138,7 +137,7 @@ export function AccountTable() {
             </CardBody>
 
             <CardFooter className='mx-auto -mt-4'>
-                <Pagination pageLimit={pageLimit} />
+                <MyCardFooter pageLimit={pageLimit} />
             </CardFooter>
         </Card>
     );

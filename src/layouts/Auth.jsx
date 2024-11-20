@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import { SignIn, SignUp, ForgotPassword, ResetPassword } from "../pages/auth";
-import NotFound from "../pages/NotFound";
+import NotFound from "../pages/status/NotFound";
 export function Auth() {
 
   return (

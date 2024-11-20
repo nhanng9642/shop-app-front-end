@@ -6,7 +6,20 @@ import {
     Typography,
 } from "@material-tailwind/react";
 
-export function StatisticsCard({ icon, title, value }) {
+import { useState, useEffect } from "react";
+
+export function StatisticCard({ icon, title, getData }) {
+    const [data, setData] = useState(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getData();
+            setData(data);
+        };
+
+        fetchData();
+    });
+
     return (
         <Card className="border border-blue-gray-100 shadow-sm">
             <CardHeader
@@ -22,7 +35,7 @@ export function StatisticsCard({ icon, title, value }) {
                     {title}
                 </Typography>
                 <Typography variant="h4" color="blue-gray">
-                    {value}
+                    {data}
                 </Typography>
             </CardBody>
         </Card>
@@ -30,4 +43,4 @@ export function StatisticsCard({ icon, title, value }) {
 }
 
 
-export default StatisticsCard;
+export default StatisticCard;

@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
-import Loading from '../../pages/Loading';
+import { Loading } from '@/pages/status';
 
 // eslint-disable-next-line react/prop-types
 export const AuthRoute = ({ children }) => {

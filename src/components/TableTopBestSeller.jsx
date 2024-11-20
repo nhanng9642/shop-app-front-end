@@ -10,7 +10,6 @@ import {
 
 const TABLE_HEAD = ["Book", "Author", "Inventory", "Price", "Genre", "Description"];
 
-
 export function TableTopBestSeller() {
 
   const [tableRows, setTableRows] = useState([]);
@@ -29,7 +28,7 @@ export function TableTopBestSeller() {
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Top Lower Stock Book
+              Top Best Seller Books
             </Typography>
           </div>
         </div>
@@ -59,13 +58,13 @@ export function TableTopBestSeller() {
             {tableRows.map(
               (
                 {
-                  _id,
+                  id,
                   author,
-                  name,
-                  categoryID: { name: category },
-                  image,
+                  title,
+                  category: { categoryName: category },
+                  bookImage,
                   price,
-                  inventory,
+                  quantityAvailable,
                   description,
                 },
                 index,
@@ -76,12 +75,12 @@ export function TableTopBestSeller() {
                   : "p-3 border-b border-blue-gray-50";
 
                 return (
-                  <tr key={_id}>
+                  <tr key={id}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
                         <Avatar
-                          src={image}
-                          alt={name}
+                          src={bookImage}
+                          alt={title}
                           size="md"
                           className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                         />
@@ -90,7 +89,7 @@ export function TableTopBestSeller() {
                           color="blue-gray"
                           className="font-bold"
                         >
-                          {name}
+                          {title}
                         </Typography>
                       </div>
                     </td>
@@ -109,7 +108,7 @@ export function TableTopBestSeller() {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {inventory}
+                        {quantityAvailable}
                       </Typography>
                     </td>
                     <td className={classes}>

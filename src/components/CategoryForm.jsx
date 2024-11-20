@@ -1,128 +1,98 @@
 import {
-  Input,
   Button,
   Typography,
-  Textarea,
 } from "@material-tailwind/react";
-import { useForm } from "react-hook-form";
 
-import { CategoryService } from "@/services";
-import {ErrorMessage} from "@/components";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
+import { CategoryService } from "@/services";
+import { TextInput } from "@/components";
 
 // eslint-disable-next-line react/prop-types
 export function CategoryForm({ categoryID }) {
-  const navigate = useNavigate();
-  const [category, setCategory] = useState(null);
-  const [isUpdate, setIsUpdate] = useState(false);
+    const navigate = useNavigate();
+    const [category, setCategory] = useState(null);
+    const [isUpdating, setIsUpdating] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    defaultValues: category,
-  });
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+        defaultValues: category,
+    });
 
-  const onSubmit = async (data) => {
-    if (!categoryID) {
-      setIsUpdate(true);
-      toast.promise(
-        CategoryService.createCategory(data),
-        {
-          loading: 'Loading...',
-          success: <span>Category saved!</span>,
-          error: error => (<span>Could not save
-            <br />
-            <span className='capitalize'>{error.message}</span>
-          </span>)
+    const onSubmit = async (data) => {
+        const saveCategory = categoryID ? CategoryService.updateCategory
+                                        : CategoryService.createCategory;
+    
+        setIsUpdating(true);
+        toast.promise(
+            saveCategory(data),
+            {
+                loading: 'Loading...',
+                success: () => { 
+                    navigate("/admin/category");
+                    return "Category saved!";
+                },
+                error: error => "Error: " + error.message
+            }
+        );
+        setIsUpdating(false);
+    }
+
+    useEffect(() => {
+        const fetchProduct = async (id) => {
+            const data = await CategoryService.getCategory(id);
+            if (!data)
+                navigate("/page-not-found");
+            setCategory(data);
+            reset({ ...data });
         }
-      );
-      setIsUpdate(false);
-    }
-    else {
-      console.log(data);
-      setIsUpdate(true);
-      toast.promise(
-        CategoryService.updateCategory(data),
-        {
-          loading: 'Loading...',
-          success: <span>Category saved!</span>,
-          error: error => (<span>Could not save
-            <br />
-            <span className='capitalize'>{error.message}</span>
-          </span>)
+
+        if (categoryID) {
+            fetchProduct(categoryID);
         }
-      );
-      setIsUpdate(false);
-    }
-  }
+    }, [categoryID, navigate, reset])
 
-  useEffect(() => {
-    const fetchProduct = async (id) => {
-      const data = await CategoryService.getCategory(id);
-      if (!data)
-        navigate("/page-not-found");
-      setCategory(data);
-      reset({ ...data });
-    }
+    return (
+        <div className='min-h-[400px]'>
+        <Typography variant="h4">
+            {categoryID ? "Edit Category" : "Add Category"}
+        </Typography>
 
-    if (categoryID) {
-      fetchProduct(categoryID);
-    }
-  }, [categoryID, reset])
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"
+            className="mt-4 mb-2 mx-auto w-1/2">
 
+            {categoryID && <TextInput 
+                label="Category ID"
+                name="id"
+                disabled
+                errors={errors}
+                register={register}
+            />}
 
-  return (
-    <div className='min-h-[400px]'>
-      <Typography variant="h4">
-        {categoryID ? "Edit Category" : "Add Category"}
-      </Typography>
+            <TextInput 
+                label="Category Name"
+                autoFocus
+                name="categoryName"
+                errors={errors}
+                register={register}
+            />
 
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"
-        className="mt-4 mb-2 mx-auto w-1/2">
-        <div className="gap-6">
-          <div>
-            {/* Name */}
-            <div className="mb-3 flex flex-col gap-6" >
-              <Typography variant="small" color="blue-gray"
-                className="-mb-5 font-medium">
-                Name
-              </Typography>
-              <Input  {...register('name', {
-                required: 'Please enter category name',
-              })} autoFocus
-                placeholder="Category Name"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-              {errors.name && <ErrorMessage mess={errors.name.message} />}
-            </div>
+            <TextInput 
+                label="Description"
+                name="description"
+                errors={errors}
+                register={register}
+                isTextArea optional
+            />
 
-
-
-            <div className="mb-1 flex flex-col gap-6 mt-4">
-              <Typography variant="small" color="blue-gray"
-                className="-mb-5 font-medium">
-                Description
-              </Typography>
-              <Textarea {...register('description')}
-                type="text"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-          </div>
+            <Button className="mt-6 w-fit ml-auto" fullWidth 
+                type="submit" disabled={isUpdating}>
+                {categoryID ? "Update Category" : "Add Category"}
+            </Button>
+        </form>
 
         </div>
-
-        <Button className="mt-6 w-fit ml-auto" fullWidth type="submit" disabled={isUpdate}>
-          {categoryID ? "Update Category" : "Add Category"}
-        </Button>
-      </form>
-
-    </div>
-  )
+    )
 }

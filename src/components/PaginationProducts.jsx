@@ -5,40 +5,53 @@ import {
     Typography,
     CardBody,
     Avatar,
-    CardFooter,
     Button,
 } from "@material-tailwind/react";
 import { Link, useSearchParams } from "react-router-dom";
 
 import { ProductService } from "@/services";
-import { Action, Pagination } from '@/components'
+import { Action, MyCardFooter } from '@/components'
 const TABLE_HEAD = ["Book", "Author", "Inventory", "Price", "Genre", "Description", "Actions"];
 
 
 export function PaginationProducts() {
-    const [tableRows, setTableRows] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [pageLimit, setPageLimit] = useState(0);
-    const page = +searchParams.get("page") || 1;
-
-    const [forceUpdateFlag, setForceUpdateFlag] = useState(false);
+    const [rows, setRows] = useState([]);
+    const [param, setParam] = useSearchParams({ page: 1, size: 7 });
+    const [totalPages, setTotalPages] = useState(0);
+    const [page, setPage] = useState(Number(param.get("page")) || 1);
+    const size = param.get("size") || 8;
+    
+    const [updateFlag, setForceUpdateFlag] = useState(false);
     const manualRerender = () => {
         setForceUpdateFlag(prevFlag => !prevFlag);
     };
 
+    const updatePage = (page) => {
+        setPage(page);
+        setParam({page, size});
+    }
+    
     useEffect(() => {
         const fetchTableRows = async () => {
-            if (page < 1) setSearchParams({ ...searchParams, page: 1 })
+            const {pagination, data} = await ProductService.getProducts(page - 1, size);
+            const {totalPages, pageSize, currentPage} = pagination;
 
-            const data = await ProductService.getProducts(page);
-            if (page > data.totalPages)
-                setSearchParams({ ...searchParams, page: data.totalPages })
-            setPageLimit(data.totalPages)
-            setTableRows(data.data);
+            if (page > pagination.totalPages){
+                setParam({ page: totalPages, size: pageSize });
+                setPage(totalPages);
+                setTotalPages(totalPages);
+                return;
+            }
+
+            if (size != pageSize || page != currentPage + 1) 
+                setParam({ page: currentPage + 1, size: pageSize });
+
+            setTotalPages(totalPages)
+            setRows(data);
         }
 
         fetchTableRows();
-    }, [page, forceUpdateFlag, pageLimit])
+    }, [page, setParam, size, updateFlag])
 
     return (
         <Card className="h-full w-full mt-1">
@@ -74,32 +87,32 @@ export function PaginationProducts() {
                         </tr>
                     </thead>
                     <tbody>
-                        {tableRows.map(
+                        {rows.map(
                             (
                                 {
-                                    _id,
+                                    id,
                                     author,
-                                    name,
-                                    categoryID,
-                                    image,
+                                    title,
+                                    category,
+                                    bookImage,
                                     price,
-                                    inventory,
+                                    quantityAvailable,
                                     description,
                                 },
                                 index,
                             ) => {
-                                const isLast = index === tableRows.length - 1;
+                                const isLast = index === rows.length - 1;
                                 const classes = isLast
                                     ? "p-3"
                                     : "p-3 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={_id}>
+                                    <tr key={id}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <Avatar
-                                                    src={image}
-                                                    alt={name}
+                                                    src={bookImage}
+                                                    alt={title}
                                                     size="md"
                                                     className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                                                 />
@@ -108,7 +121,7 @@ export function PaginationProducts() {
                                                     color="blue-gray"
                                                     className="font-bold"
                                                 >
-                                                    {name || ""}
+                                                    {title || ""}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -127,7 +140,7 @@ export function PaginationProducts() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {inventory || ""}
+                                                {quantityAvailable || ""}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -146,7 +159,7 @@ export function PaginationProducts() {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {categoryID?.name || "Null"}
+                                                    {category?.categoryName || "Null"}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -161,8 +174,8 @@ export function PaginationProducts() {
                                         </td>
 
                                         <td className={classes} >
-                                            <Action routeEdit={`/admin/product/`}
-                                                _id={_id}
+                                            <Action route={`/admin/product/`}
+                                                _id={id}
                                                 manualRerender={manualRerender}
                                                 deleteRow={ProductService.deleteProduct}
                                             />
@@ -177,9 +190,7 @@ export function PaginationProducts() {
                 </table>
             </CardBody>
 
-            <CardFooter className='mx-auto -mt-4'>
-                <Pagination pageLimit={pageLimit} />
-            </CardFooter>
+            <MyCardFooter totalPages={totalPages} page={page} updatePage={updatePage} />
         </Card>
     )
 }

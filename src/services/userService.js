@@ -29,8 +29,8 @@ export const userServices = {
             },
         })
     
-        const data = await res.json();
-        return data;
+        const response = await res.json();
+        return response;
     },
 
     signup: async (data) => {  

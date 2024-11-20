@@ -1,14 +1,14 @@
 import {
-  Input,
   Button,
-  Typography
+  Typography,
 } from "@material-tailwind/react";
 
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import {ErrorMessage} from "@/components";
-import { userServices } from "@/services";
 import { toast } from "react-hot-toast";
+
+import { userServices, passwordRules, confirmPasswordRules } from "@/services";
+import { PasswordInput, TextInput } from "@/components";
 
 export function SignUp() {
   const { register, handleSubmit, setError, watch, formState: { errors } } = useForm();
@@ -25,7 +25,8 @@ export function SignUp() {
             },
             error: ({message}) => {
                 const inputError = userServices.extractInputError(message);
-                setError(inputError, {type: 'manual', message: message}, {shouldFocus: true});
+                setError(inputError, 
+                        {type: 'manual', message: message}, {shouldFocus: true});
                 return message;
             }
         }
@@ -44,111 +45,78 @@ return (
 
             <form onSubmit={handleSubmit(onSubmit)}
                 className="mt-4 mb-2 mx-auto w-full">
-                <div className="mb-6 flex flex-col">
-                    <Input 
-                        autoFocus
-                        label="Username"
-                        variant="outlined"
-                        error={errors.username}
-                        {...register('username', {
-                            required: 'Enter username'
-                        })}
-                    />
-                    {errors.username && <ErrorMessage mess={errors.username.message} />}
-                </div>
 
-                <div className="mb-6 flex flex-col gap-6">
-                    <div className="flex gap-4">
-                        <div>
-                            <Input 
-                                label="First name"
-                                variant="outlined"
-                                error={errors.firstName}
-                                {...register('firstName', {
-                                required: 'Enter first name',
-                                validate: (val) => {
-                                    const pattern = /^[a-zA-Z]+$/;
-                                    if (!pattern.test(val.trim())) {
-                                        return "First name should only contain letters";
-                                    }
-                                }
-                            })}
-                            />
-                            {errors.firstName && <ErrorMessage mess={errors.firstName.message} />}
-                        </div>
-                        
-                        <div>
-                            <Input 
-                                label="Last name (optional)"
-                                variant="outlined"
-                                error={errors.lastName}
-                                {...register('lastName', {
-                                validate: (val) => {
-                                    const pattern = /^[a-zA-Z]*$/;
-                                    if (!pattern.test(val.trim())) {
-                                        return "Last name should only contain letters";
-                                    }
-                                }
-                            })}
-                            />
-                            
-                            {errors.lastName && <ErrorMessage mess={errors.lastName.message} />}
-                        </div>
-                    </div>
-                </div>
+                <TextInput 
+                    autoFocus
+                    register={register}
+                    errors={errors}
+                    label="Username"
+                    name="username"
+                />
 
-                <div className="mb-6 flex flex-col">
-                    <Input 
-                        label="Email"
-                        variant="outlined"
-                        error={errors.email}
-                        {...register('email', {
-                            required: 'Enter email',
+                <div className="flex gap-4">
+                    <TextInput 
+                        register={register}
+                        errors={errors}
+                        label="First name"
+                        name="firstName"
+                        validationRules={{
                             validate: (val) => {
-                                const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+                                const pattern = /^[a-zA-Z]+$/;
                                 if (!pattern.test(val.trim())) {
-                                    return "Enter a valid email";
+                                    return "First name should only contain letters";
                                 }
                             }
-                        })}
+                        }}
                     />
-                    {errors.email && <ErrorMessage mess={errors.email.message} />}
-                </div>
-
-                <div className="mb-6 mt-4">
-                    <Input
-                        label="Password"
-                        variant="outlined"
-                        error={errors.password}
-                        type="password"
-                        {...register('password', {
-                        required: 'Enter password',
-                        minLength: {
-                            value: 6,
-                            message: "Your password must be at least 6 characters",
-                        }
-                    })}
-                    />
-                    {errors.password && <ErrorMessage mess={errors.password.message} />}
-                </div>
-
-                <div className="mb-6 flex flex-col mt-4">
-                    <Input
-                        label="Confirm Password"
-                        error={errors.confirm_password}
-                        variant="outlined"
-                        {...register("confirm_password", {
-                            required: "Enter confirm password",
+                    
+                    <TextInput 
+                        register={register}
+                        errors={errors}
+                        label="Last name"
+                        name="lastName"
+                        optional
+                        validationRules={{
                             validate: (val) => {
-                                if (watch('password') != val) {
-                                    return "Your passwords do not match";
+                                const pattern = /^[a-zA-Z]*$/;
+                                if (!pattern.test(val.trim())) {
+                                    return "Last name should only contain letters";
                                 }
-                            },
-                        })}
-                        type="password"
+                            }
+                        }}
                     />
-                    {errors.confirm_password && <ErrorMessage mess={errors.confirm_password.message} />}
                 </div>
+
+                <TextInput 
+                    register={register}
+                    errors={errors}
+                    label="Email"
+                    name="email"
+                    validationRules={{
+                        validate: (val) => {
+                            const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+                            if (!pattern.test(val.trim())) {
+                                return "Enter a valid email";
+                            }
+                        }
+                    }}
+                />
+
+                <PasswordInput
+                    register={register}
+                    errors={errors}
+                    label="Password"
+                    validationRules={passwordRules}
+                    name="password"
+                />
+
+                <PasswordInput
+                    register={register}
+                    errors={errors}
+                    label="Confirm Password"
+                    validationRules={confirmPasswordRules(watch)}
+                    name="confirm_password"
+                />
                 
                 <Button className="mt-2 font-bold text-base" fullWidth type="submit">
                     Register Now
@@ -156,18 +124,17 @@ return (
                 
                 <hr className="my-4 border-gray-300 w-full" />
 
-                <div className="mt-4 text-center">
-                    <p className="opacity-70 inline">
+                <div className="text-center">
+                    <p className="opacity-70 inline text-sm">
                         Already have an account?
                     </p>
                     <Link to="/auth/sign-in" 
-                        className="inline pl-2 font-bold text-blue-700 text-lg
+                        className="inline pl-2 font-bold text-blue-700 text-base
                                    hover:text-blue-900 hover:underline">
                             Log in
                     </Link>
                 </div>
             </form>
-
         </div>
     </section>
 );

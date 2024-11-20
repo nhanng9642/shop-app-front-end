@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 
-
-export default function Forbidden() {
+export function Forbidden() {
   return (
     <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">
@@ -10,7 +9,7 @@ export default function Forbidden() {
           FORBIDDEN
         </h1>
         <p className="mt-6 text-base leading-7 text-gray-600">
-          Sorry, you don't have any permission to do this action 🥲.
+          Sorry, you don&apos;t have any permission to do this action 🥲.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link

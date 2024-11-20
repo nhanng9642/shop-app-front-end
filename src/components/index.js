@@ -1,9 +1,8 @@
-export * from './StatisticsCard';
-export * from './StatisticsChart';
+export * from './statistic/card/StatisticCard';
 export * from './TableTopBestSeller';
 export * from './PaginationProducts';
 export * from './CategoryTable';
-export * from './Action';
+export * from './table-components/Action';
 export * from './CategoryForm';
 export * from './AccountForm';
 export * from './AccountTable';
@@ -13,5 +12,7 @@ export * from './ProductCartQty';
 export * from './ProfileMenu';
 export * from './ChangePassDialog';
 export * from './EditProfileDialog';
-export * from './Pagination'
-export { default as ErrorMessage } from './ErrorMessage';
+export * from './table-components/MyCardFooter';
+export * from './input';
+export * from './statistic';
+export * from './table-components';
