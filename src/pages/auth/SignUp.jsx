@@ -47,19 +47,19 @@ return (
                 className="mt-4 mb-2 mx-auto w-full">
 
                 <TextInput 
+                    name="username"
                     autoFocus
                     register={register}
                     errors={errors}
                     label="Username"
-                    name="username"
                 />
 
                 <div className="flex gap-4">
                     <TextInput 
+                        name="firstName"
                         register={register}
                         errors={errors}
                         label="First name"
-                        name="firstName"
                         validationRules={{
                             validate: (val) => {
                                 const pattern = /^[a-zA-Z]+$/;
@@ -71,10 +71,10 @@ return (
                     />
                     
                     <TextInput 
+                        name="lastName"
                         register={register}
                         errors={errors}
                         label="Last name"
-                        name="lastName"
                         optional
                         validationRules={{
                             validate: (val) => {
@@ -88,10 +88,10 @@ return (
                 </div>
 
                 <TextInput 
+                    name="email"
                     register={register}
                     errors={errors}
                     label="Email"
-                    name="email"
                     validationRules={{
                         validate: (val) => {
                             const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
@@ -103,19 +103,19 @@ return (
                 />
 
                 <PasswordInput
+                    name="password"
                     register={register}
                     errors={errors}
                     label="Password"
                     validationRules={passwordRules}
-                    name="password"
                 />
 
                 <PasswordInput
+                    name="confirm_password"
                     register={register}
                     errors={errors}
                     label="Confirm Password"
                     validationRules={confirmPasswordRules(watch)}
-                    name="confirm_password"
                 />
                 
                 <Button className="mt-2 font-bold text-base" fullWidth type="submit">

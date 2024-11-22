@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import {
-  Input,
   Button,
   Typography,
 } from "@material-tailwind/react";
 
-import { useForm } from "react-hook-form";
-import { AccountService } from "@/services";
-import { ErrorMessage } from "@/components";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
+import { AccountService } from "@/services";
+import { TextInput } from "@/components";
 
 export function AccountForm
 ({ accountID }) {
@@ -18,38 +18,22 @@ export function AccountForm
   const [acccount, setAcccount] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: acccount,
   });
 
   const onSubmit = async (data) => {
     if (!accountID) {
-      setIsUpdate(true);
-      toast.promise(
-        AccountService.createAccount(data),
-        {
-          loading: 'Loading...',
-          success: <span>Account saved!</span>,
-          error: error => (<span>Could not save
-            <br />
-            <span className='capitalize'>{error.message}</span>
-          </span>)
-        }
-      );
-      setIsUpdate(false);
+      return toast.error("Account ID is required");
     }
     else {
-      console.log(data);
       setIsUpdate(true);
       toast.promise(
         AccountService.updateAccount(data),
         {
           loading: 'Loading...',
-          success: <span>Account saved!</span>,
-          error: error => (<span>Could not save
-            <br />
-            <span className='capitalize'>{error.message}</span>
-          </span>)
+          success: res => res.message,
+          error: res => res.message,
         }
       );
       setIsUpdate(false);
@@ -61,7 +45,7 @@ export function AccountForm
       const data = await AccountService.getAccount(id);
       if (!data)
         navigate("/page-not-found");
-      setAcccount(data);
+      setAcccount(data);    
       reset({ ...data });
     }
 
@@ -78,42 +62,48 @@ export function AccountForm
 
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"
         className="mt-4 mb-2 mx-auto w-2/5">
-        <div className="grid grid-cols gap-6">
-          <div>
-            {/* User ID */}
-            <div className="mb-3 flex flex-col gap-6" >
-              <Typography variant="small" color="blue-gray"
-                className="-mb-5 font-medium">
-                User ID
-              </Typography>
-              <Input  {...register('userId', {
-                required: 'Please enter category name',
-              })} disabled
-                placeholder="Category Name"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-              {errors.name && <ErrorMessage mess={errors.name.message} />}
-            </div>
+            <TextInput 
+                label="User ID"
+                register={register}
+                name="id"
+                disabled
+            />
 
-            <div className="mb-1 flex flex-col gap-6 mt-4">
-              <Typography variant="small" color="blue-gray"
-                className="-mb-5 font-medium">
-                Balance
-              </Typography>
-              <Input {...register('balance')}
-                type="number"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-          </div>
+            <TextInput
+                label="First name"
+                register={register}
+                name="firstName"
+                disabled
+            />
 
-        </div>
+            <TextInput
+                label="Last name"
+                register={register}
+                name="lastName"
+                disabled
+            />
+
+            <TextInput 
+                label="Username"
+                register={register}
+                name="username"
+                disabled
+            />
+
+            <TextInput 
+                label="Email"
+                register={register}
+                name="email"
+                disabled
+            />
+
+            <TextInput
+                label="Role"
+                register={register}
+                name="role"
+                disabled
+            />
+
 
         <Button className="mt-6 w-fit ml-auto" fullWidth type="submit" disabled={isUpdate}>
           {accountID ? "Update Account" : "Add Account"}

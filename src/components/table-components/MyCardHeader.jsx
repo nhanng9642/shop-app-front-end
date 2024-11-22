@@ -6,11 +6,11 @@ export function MyCardHeader({title}) {
     return (
         <CardHeader floated={false} shadow={false} className="rounded-none h-full">
             <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
-                <Typography variant="h5" color="blue-gray">
-                    {title} Table
+                <Typography variant="h4" color="blue-gray">
+                    {title}
                 </Typography>
 
-                <Link to={`/admin/${title}/add`}>
+                <Link to={`/admin/${title.toLowerCase()}/add`}>
                     <Button color="green" >Add {title}</Button>
                 </Link>
             </div>

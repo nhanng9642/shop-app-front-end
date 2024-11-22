@@ -3,7 +3,12 @@ import { Typography } from "@material-tailwind/react";
 
 import { Action } from "@/components";
 
-export function TableBody({data, properties, handleDelete, deleteRow}) {
+function getValue(obj, path) {
+    return path.split(".").reduce((acc, key) => acc[key], obj);
+}
+
+export function TableBody({data, properties, name,
+                            handleDelete, deleteRow}) {
   return (
         <tbody>
             {data.map((row, index) => {
@@ -19,14 +24,14 @@ export function TableBody({data, properties, handleDelete, deleteRow}) {
                                     color="blue-gray"
                                     className="font-normal" 
                                 >
-                                    {row[key]}
+                                    {getValue(row, key) || "N/A"}
                                 </Typography>
                             </td>
                         ))}
 
                         <td className={classes}>
                             <Action 
-                                route={`/admin/category/`}
+                                route={`/admin/${name}/`}
                                 _id={row.id}
                                 onDelete={handleDelete}
                                 deleteRow={deleteRow}

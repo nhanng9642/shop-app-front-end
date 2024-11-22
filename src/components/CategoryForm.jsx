@@ -30,9 +30,9 @@ export function CategoryForm({ categoryID }) {
             saveCategory(data),
             {
                 loading: 'Loading...',
-                success: () => { 
+                success: res => { 
                     navigate("/admin/category");
-                    return "Category saved!";
+                    return res.message;
                 },
                 error: error => "Error: " + error.message
             }

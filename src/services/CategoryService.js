@@ -42,7 +42,8 @@ export const CategoryService = {
         const data = await res.json();
         if (data.success === false)
             throw new Error(data.message);
-        return data.data;
+        
+        return data;
     },
 
     updateCategory: async (category) => {

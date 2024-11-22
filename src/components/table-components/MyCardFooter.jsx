@@ -2,7 +2,7 @@ import { IconButton, Typography, CardFooter } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 // eslint-disable-next-line react/prop-types
-export function MyCardFooter({ totalPages = 10, page, updatePage }) {
+export function MyCardFooter({ totalPages = 0, page, updatePage }) {
   const next = () => {
     if (page === totalPages) return;
     updatePage(page + 1);
@@ -14,7 +14,7 @@ export function MyCardFooter({ totalPages = 10, page, updatePage }) {
   };
 
   return (
-    <CardFooter className='mx-auto -mt-4'>
+    totalPages >1 && <CardFooter className='mx-auto -mt-4'>
         <div className="flex items-center gap-8">
             <IconButton
                 size="sm"
@@ -39,5 +39,6 @@ export function MyCardFooter({ totalPages = 10, page, updatePage }) {
                 <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
             </IconButton>
         </div>
-    </CardFooter>)
+    </CardFooter>
+    )
 }

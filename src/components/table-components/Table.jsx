@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
     Card,
     CardBody,
@@ -5,13 +6,9 @@ import {
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom';
 
-import { CategoryService } from '@/services'
 import {  MyCardFooter, MyCardHeader, TableBody, TableHeader } from '@/components';
 
-const TABLE_HEAD = ["#", "Name", "Description", "Action"];
-const properties = ["id", "categoryName", "description"];
-
-export function CategoryTable() {
+export function Table({name, getData, tableHead, properties, deleteData}) {
     const [rows, setRows] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [param, setParam] = useSearchParams({ page: 1, size: 7 });
@@ -20,9 +17,8 @@ export function CategoryTable() {
 
     const handleDelete = async (id) => {
         setRows(prevRows => {
-            const newRows = prevRows.filter(row => row.id == id);
-            
-            if (prevRows.length === 1) setPage(page - 1);
+            if (prevRows.length === 1) updatePage(page > 1 ? page - 1 : 1);
+            const newRows = prevRows.filter(row => row.id !== id);
             return newRows;
         });
     };
@@ -34,7 +30,7 @@ export function CategoryTable() {
 
     useEffect(() => {
         const fetchTableRows = async () => {
-            const {pagination, data} = await CategoryService.getCategories(page - 1, size);
+            const {pagination, data} = await getData(page - 1, size);
             const {totalPages, pageSize, currentPage} = pagination;
 
             if (page > totalPages){
@@ -52,23 +48,27 @@ export function CategoryTable() {
         }
 
         fetchTableRows();
-    }, [page, setParam, size])
+    }, [getData, page, setParam, size])
 
     return (
         <Card className="h-full w-full mt-1">
-            <MyCardHeader title="Category" />
+            <MyCardHeader title={name} />
 
             <CardBody className="px-0 -mt-2">
-                <table className="w-full table-auto text-left">
-                    <TableHeader headers={TABLE_HEAD} />
-
+                {!totalPages && <div className="text-gray-500 text-base ml-4 mt-5">No data available</div>}    
+                
+                {!!totalPages && <table className="w-full table-auto text-left">
+                    <TableHeader headers={tableHead} />
+                    
                     <TableBody
                         data={rows}
+                        name={name}
                         properties={properties}
                         handleDelete={handleDelete}
-                        deleteRow={CategoryService.deleteCategory}
+                        deleteRow={deleteData}
                     />
                 </table>
+                }           
             </CardBody>
 
             <MyCardFooter 

@@ -12,3 +12,24 @@ export const confirmPasswordRules = (watch, password = "password") => ({
         }
     }
 })
+
+export const numberRule = {
+    number: v => {
+        if (isNaN(v)) return "Enter a valid number";
+        return true;
+    }
+};
+
+export const positiveRule = {
+    positive: v => {
+        if (v < 0) return "Enter a positive number";
+        return true;
+    }
+}
+
+export const integerRule = {
+    integer: v => {
+        if (!Number.isInteger(Number(v))) return "Enter an integer";
+        return true;
+    }
+}

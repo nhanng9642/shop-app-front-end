@@ -1,4 +1,3 @@
-import axios from "axios";
 import { API_URL } from './config';
 
 export const ProductService = {
@@ -46,52 +45,40 @@ export const ProductService = {
 
     addProduct: async (product) => {
         const token = localStorage.getItem('token');
+        const formData = createFormData(product);
 
-        const formData = new FormData();
-        formData.append('name', product.name);
-        formData.append('author', product.author);
-        formData.append('description', product.description);
-        formData.append('price', product.price);
-        formData.append('publisher', product.publisher);
-        formData.append('publishedYear', product.publishedYear);
-
-        if (product.image)
-            formData.append('image', product.image);
-        formData.append('categoryID', product.categoryID);
-        formData.append('inventory', product.inventory);
-
-        const response = await axios.post(`${API_URL}/book`, formData, {
+        const response = await fetch(`${API_URL}/book`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, 
             },
-        })
-        return response;
+            body: formData,
+        });
+        
+        const res = await response.json();
+        if (!res.success)
+            throw new Error(res.message);
+
+        return res;
     },
 
     updateProduct: async (product) => {
         const token = localStorage.getItem('token');
+        const formData = createFormData(product);
 
-        const formData = new FormData();
-        formData.append('name', product.name);
-        formData.append('author', product.author);
-        formData.append('description', product.description);
-        formData.append('price', product.price);
-        formData.append('publisher', product.publisher);
-        formData.append('publishedYear', product.publishedYear);
-
-        if (product.image)
-            formData.append('image', product.image);
-        formData.append('categoryID', product.categoryID);
-        formData.append('inventory', product.inventory);
-
-        const response = await axios.patch(`${API_URL}/book/${product._id}`, formData, {
+        const response = await fetch(`${API_URL}/book/${product.id}`, {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, 
             },
-        })
-        return response;
+            body: formData,
+        });
+        
+        const res = await response.json();
+        if (!res.success)
+            throw new Error(res.message);
+
+        return res;
     },
 
     deleteProduct: async (id) => {
@@ -105,7 +92,11 @@ export const ProductService = {
             },
         });
 
-        return response;
+        const res = await response.json();
+
+        if (!res.success)
+            throw new Error(res.message);
+        return res;
     },
 
     getProduct: async (id) => {
@@ -121,4 +112,14 @@ export const ProductService = {
         const data = await response.json();
         return data.data;
     },  
+}
+
+const createFormData = (data)  => {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            formData.append(key, value);
+        }
+    });
+    return formData;
 }

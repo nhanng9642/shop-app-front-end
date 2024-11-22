@@ -1,7 +1,6 @@
 export * from './statistic/card/StatisticCard';
 export * from './TableTopBestSeller';
 export * from './PaginationProducts';
-export * from './CategoryTable';
 export * from './table-components/Action';
 export * from './CategoryForm';
 export * from './AccountForm';
