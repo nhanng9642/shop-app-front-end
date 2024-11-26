@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import { userServices } from "@/services";
+import { getProfile } from "@/services";
 import { AuthContext } from "./AuthContext";
 
 const INIT = "INIT", SIGNIN = "SIGN_IN", LOGOUT = "LOG_OUT";
@@ -33,7 +33,7 @@ export function AuthProvider({children}) {
 
             if (token) {
                 try {
-                    const { data } = await userServices.getProfile();
+                    const { data } = await getProfile();
                     dispatch({ type: SIGNIN, payload: data });
                 } catch {
                     dispatch({ type: INIT });

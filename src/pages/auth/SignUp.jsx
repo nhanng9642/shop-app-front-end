@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-import { userServices, passwordRules, confirmPasswordRules } from "@/services";
+import { signup, passwordRules, confirmPasswordRules, extractInputError } from "@/services";
 import { PasswordInput, TextInput } from "@/components";
 
 export function SignUp() {
@@ -16,7 +16,7 @@ export function SignUp() {
 
   const onSubmit = async (data) => {
     toast.promise(
-        userServices.signup(data),
+        signup(data),
         {
             loading: 'Signing up...',
             success: (data) => {
@@ -24,7 +24,7 @@ export function SignUp() {
                 return data.message;
             },
             error: ({message}) => {
-                const inputError = userServices.extractInputError(message);
+                const inputError = extractInputError(message);
                 setError(inputError, 
                         {type: 'manual', message: message}, {shouldFocus: true});
                 return message;

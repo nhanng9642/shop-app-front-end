@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useForm} from "react-hook-form"
 import { toast } from "react-hot-toast";
-import { userServices } from "@/services";
+import { changePassword } from "@/services";
 import { useAuth} from "@/context/auth-context";
 import {
 	Button,
@@ -25,7 +25,7 @@ export function ChangePassDialog({open, setOpen}) {
 	
 	const onSubmit = async (data) => {
 		setIsUpdate(true);
-		const res = await userServices.changePassword(data);
+		const res = await changePassword(data);
 		if(res.status === 'success'){
 			setOpen(false);
 			toast.success('Change password successfully');

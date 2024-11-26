@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useUserContext } from "@/context/user";
 import { Typography,Button } from "@material-tailwind/react";
-import { ProductService, cartService, userServices} from "@/services";
+import { ProductService, cartService, payment} from "@/services";
 import { ProductCartQty } from "@/components";
 import {toast} from "react-hot-toast"
 
@@ -20,7 +20,7 @@ export const Cart = () => {
 	}, [cart]);
 		
 	const handlePayment = async () => {
-		const res = await userServices.payment();
+		const res = await payment();
 		if(res.status == 'success') {
 			toast.success(res.message);
 			setCart([]);

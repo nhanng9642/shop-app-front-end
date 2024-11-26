@@ -109,8 +109,10 @@ export function ProductForm({ productId }) {
                         </Typography>
 
                         <select className="border border-gray-300 rounded-lg p-2 cursor-pointer w-full"
-                            defaultValue={product?.category?.id}
-                            {...register('categoryId')}>
+                                defaultValue={product?.category?.id}
+                                {...register('categoryId')}
+                                
+                            >
                             {categories.map((category) => (
                                 <option key={category.id} value={category.id}
                                 >

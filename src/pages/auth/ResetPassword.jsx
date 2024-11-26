@@ -5,7 +5,7 @@ import { Typography, Input, Button } from '@material-tailwind/react';
 import { toast } from 'react-hot-toast';
 
 import { ErrorMessage } from "@/components";
-import { userServices } from "@/services";
+import { resetPassword } from "@/services";
 
 export function ResetPassword() {
   const [tokenReset, setTokenReset] = useState('')
@@ -17,7 +17,7 @@ export function ResetPassword() {
     console.log(data);
 
     toast.promise(
-      userServices.resetPassword(data, tokenReset),
+      resetPassword(data, tokenReset),
       {
         loading: 'Loading...',
         success: () => {

@@ -50,6 +50,7 @@ function App() {
         } />
 
         <Route path="/" element={<Navigate to="/auth/sign-in" />} />
+
         <Route path="/*" element={<NotFound />} />
       </Routes>
       

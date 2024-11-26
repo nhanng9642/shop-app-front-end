@@ -31,13 +31,13 @@ export const TextInput = ({ register, errors = {}, name, validationRules = {vali
     return (
         <div className={errors[name] ? "mb-4" : "mb-6"}>
             <Component
-                disabled={disabled}
                 autoComplete="on"
                 autoFocus={autoFocus}
                 autoCapitalize="on"
                 variant="outlined"
                 error={!!errors[name]}
                 label={label}
+                disabled={disabled}
                 {...register(name, validationRules)}
             >
             </Component>

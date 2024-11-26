@@ -15,3 +15,4 @@ export * from './table-components/MyCardFooter';
 export * from './input';
 export * from './statistic';
 export * from './table-components';
+export * from './SignInWithFB'

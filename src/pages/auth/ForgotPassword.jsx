@@ -4,7 +4,7 @@ import { Typography, Input, Button } from '@material-tailwind/react';
 import { toast } from 'react-hot-toast';
 
 import { ErrorMessage } from "@/components";
-import { userServices } from "@/services";
+import { forgotPassword } from "@/services";
 
 export function ForgotPassword() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -12,7 +12,7 @@ export function ForgotPassword() {
     console.log(data);
 
     toast.promise(
-      userServices.forgotPassword(data),
+      forgotPassword(data),
       {
         loading: 'Loading...',
         success: (data) => data.message,

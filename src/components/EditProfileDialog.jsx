@@ -11,7 +11,7 @@ import {
 
 import { useAuth } from "@/context/auth-context";
 import {useForm} from "react-hook-form";
-import { userServices } from "@/services";
+import { updateMe } from "@/services";
 import {toast} from "react-hot-toast"
 
 // eslint-disable-next-line react/prop-types
@@ -37,7 +37,7 @@ export function EditProfileDialog({open, setOpen}) {
 		setIsUpdate(true);
 		data.image = imageInput.current.files[0];
 		if(!data.image) delete data.image;
-		const res = await userServices.updateMe(data);
+		const res = await updateMe(data);
 		if(res.status == "success"){
 			setOpen(false);
 			toast.success('Edit profile successfully');
