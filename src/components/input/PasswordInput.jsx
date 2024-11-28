@@ -16,28 +16,27 @@ export const PasswordInput = ({ register, errors, validationRules = {},
 
     return (
         <div className={errors[name] ? "mb-4" : "mb-6"}>
-        <Input
-            autoCapitalize="on"
-            variant="outlined"
-            error={!!errors[name]}
-            type={passwordShown ? "text" : "password"}
-            label={label}
-            {...register(name, validationRules)}
-            icon={
-                <i 
-                    className="cursor-pointer hover:text-blue-600"
-                    onClick={toggleShowPassword}>
-                  {passwordShown ? (
-                    <EyeIcon className="h-45 w-45" />
-                  ) : (
-                    <EyeSlashIcon className="h-45 w-45" />
-                  )}
-                </i>
-            }
-        >
-        </Input>
+            <Input
+                autoCapitalize="on"
+                variant="outlined"
+                error={!!errors[name]}
+                type={passwordShown ? "text" : "password"}
+                label={label}
+                {...register(name, validationRules)}
+                icon={
+                    <i 
+                        className="cursor-pointer hover:text-blue-600"
+                        onClick={toggleShowPassword}>
+                    {passwordShown ? (
+                        <EyeIcon className="h-45 w-45" />
+                    ) : (
+                        <EyeSlashIcon className="h-45 w-45" />
+                    )}
+                    </i>
+                }
+            />
 
-        {errors[name] && <ErrorMessage mess={errors[name].message} />}
+            {errors[name] && <ErrorMessage mess={errors[name].message} />}
         </div>
     )
 };

@@ -33,7 +33,6 @@ export const SingInWithFB = ({onSuccess }) => {
   const handleFacebookLogin = () => {
     window.FB.login(
       (response) => {
-        console.log(response);
         if (response.status === "connected") {
           const { accessToken } = response.authResponse;
           if (onSuccess) onSuccess(accessToken); // Pass the accessToken to the parent component

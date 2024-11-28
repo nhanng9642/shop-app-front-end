@@ -8,9 +8,11 @@ export const signin = (data) => fetchWithToken(`${URL}/login`, 'POST', data);
 
 export const signup = (data) => fetchWithToken(`${URL}/sign-up`, 'POST', data, false);
 
-export const forgotPassword = (data) => fetchWithToken(`${URL}/reset-password`, 'POST', data, false);
+export const forgotPassword = (data) => 
+    fetchWithToken(`${URL}/recover-password?email=${data.email}`, 'GET', undefined, false);
 
-export const resetPassword = (data, token) => fetchWithToken(`${URL}/recovery-password/${token}`, 'POST', data);
+export const resetPassword = (data, token) =>
+    fetchWithToken(`${URL}/reset-password?token=${token}`, 'POST', data, false);
 
 export const updateMe = async (data) => {
     const token = localStorage.getItem('token');

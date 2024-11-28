@@ -33,3 +33,11 @@ export const integerRule = {
         return true;
     }
 }
+
+export const emailRule = {
+    email: v => {
+        const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+        if (!pattern.test(v.trim())) return "Enter a valid email";
+        return true;
+    }
+}

@@ -92,14 +92,7 @@ return (
                     register={register}
                     errors={errors}
                     label="Email"
-                    validationRules={{
-                        validate: (val) => {
-                            const pattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
-                            if (!pattern.test(val.trim())) {
-                                return "Enter a valid email";
-                            }
-                        }
-                    }}
+                    email
                 />
 
                 <PasswordInput

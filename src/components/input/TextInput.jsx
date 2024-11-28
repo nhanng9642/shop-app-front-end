@@ -1,14 +1,17 @@
 import { Input, Textarea } from "@material-tailwind/react";
 import { ErrorMessage } from "..";
 
-import { positiveRule, numberRule, integerRule } from '@/services'
+import { positiveRule, numberRule, integerRule, emailRule } from '@/services'
 
 const ruleFunctions = { number: numberRule, 
                         integer: integerRule, 
-                        positive: positiveRule };
+                        positive: positiveRule,
+                        email: emailRule };
 
 /* eslint-disable react/prop-types */
-export const TextInput = ({ register, errors = {}, name, validationRules = {validate: {}}, label,
+export const TextInput = ({ register, errors = {},
+                            email = false, name,
+                            validationRules = {validate: {}}, label,
                             disabled = false, autoFocus = false,
                             isTextArea = false, optional = false,
                             integer = false, positive = false, number = false
@@ -20,7 +23,7 @@ export const TextInput = ({ register, errors = {}, name, validationRules = {vali
         validationRules["required"] = `Enter ${label.toLowerCase()}`;
     }
 
-    const rules = { number, integer, positive };
+    const rules = { number, integer, positive, email };
 
     Object.keys(rules).forEach(rule => {
         if (rules[rule]) {
