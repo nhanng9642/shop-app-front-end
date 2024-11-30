@@ -2,17 +2,19 @@ import { API_URL } from "./config";
 import axios from "axios";
 import { fetchWithToken } from "./utils";
 
+const fetchNoToken = (url, method, data) => fetchWithToken(url, method, data, false);
+
 const URL = API_URL + '/auth';
 
-export const signin = (data) => fetchWithToken(`${URL}/login`, 'POST', data);
+export const signin = (data) => fetchNoToken(`${URL}/login`, 'POST', data);
 
-export const signup = (data) => fetchWithToken(`${URL}/sign-up`, 'POST', data, false);
+export const signup = (data) => fetchNoToken(`${URL}/sign-up`, 'POST', data);
 
 export const forgotPassword = (data) => 
-    fetchWithToken(`${URL}/recover-password?email=${data.email}`, 'GET', undefined, false);
+    fetchNoToken(`${URL}/recover-password?email=${data.email}`, 'GET', undefined);
 
 export const resetPassword = (data, token) =>
-    fetchWithToken(`${URL}/reset-password?token=${token}`, 'POST', data, false);
+    fetchNoToken(`${URL}/reset-password?token=${token}`, 'POST', data);
 
 export const updateMe = async (data) => {
     const token = localStorage.getItem('token');
@@ -33,10 +35,10 @@ export const updateMe = async (data) => {
     return response.data;
 };
 
-export const changePassword = (data) => fetchWithToken(`${API_URL}/user/change-password`, 'POST', data);
+export const changePassword = (data) => fetchNoToken(`${API_URL}/user/change-password`, 'POST', data);
 
-export const signInWithGoogle = (data) => fetchWithToken(`${URL}/oauth2/google`, 'POST', data, false);
+export const signInWithGoogle = (data) => fetchNoToken(`${URL}/oauth2/google`, 'POST', data);
 
 export const signInWithFacebook = (data) => {
-    return fetchWithToken(`${URL}/oauth2/facebook`, 'POST', data, false);
+    return fetchNoToken(`${URL}/oauth2/facebook`, 'POST', data);
 }

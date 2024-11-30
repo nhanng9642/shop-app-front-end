@@ -5,7 +5,7 @@ const URL = API_URL + '/user';
 export const AccountService = {
     getAccounts: async (page = 1, limit = 7) => {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${URL}?page=${page}&size=${limit}`, {
+        const response = await fetch(`${URL}/all?page=${page}&size=${limit}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

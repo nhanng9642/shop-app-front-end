@@ -1,10 +1,10 @@
 import { Table } from '@/components'
-import { CategoryService } from '@/services'
+import { deleteCategory, getCategories } from '@/services'
 
 export function Category() {
     const tableHeader = ["#", "Name", "Description", "Action"];
     const properties = ["id", "categoryName", "description"];
-    const {deleteCategory, getCategories} = CategoryService;
+    
     return (
         <Table
             name="Category"

@@ -1,4 +1,4 @@
-export const fetchWithToken = async (url, method, data, useToken = true) => {
+export const fetchWithToken = async (url, method = "GET", data = undefined, useToken = true) => {
     const headers = {
         'Content-Type': 'application/json',
     };
@@ -31,3 +31,32 @@ export const extractInputError = (message) => {
 
     return inputError;
 }; 
+
+export const fetchFormData = async (url, data, method = "POST") => {
+    const formData = createFormData(data);
+    const headers = {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+    };
+
+    const res = await fetch(url, {
+        method,
+        headers,
+        body: formData,
+    });
+
+    const rs = await res.json();
+    if (!rs.success) {
+        throw new Error(rs.message);
+    }
+    return rs;
+}
+
+const createFormData = (data) => {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            formData.append(key, value);
+        }
+    });
+    return formData;
+};

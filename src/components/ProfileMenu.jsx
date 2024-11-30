@@ -12,21 +12,24 @@ import { ChangePassDialog, EditProfileDialog } from "@/components";
 
 export function ProfileMenu() {
 	const {user} = useAuth();
+
 	const [openPassDialog, setOpenPassDialog] = useState(false);
 	const [openProfileDialog, setOpenProfileDialog] = useState(false);
+
 	const handleSignout = () => {
         localStorage.removeItem('token');
         window.location.reload();
 	}
+
 	return (
 		<>
 		<Menu>
 			<MenuHandler>
 				<Avatar
 					variant="circular"
-					alt="tania andrew"
+					alt="user avatar"
 					className="cursor-pointer w-[32px] h-[32px]"
-					src={user.image}
+					src={user.avatar}
 				/>
 			</MenuHandler>
 			<MenuList>
@@ -47,9 +50,10 @@ export function ProfileMenu() {
 					</svg>
 			
 					<Typography variant="small" className="font-medium">
-						{user.name}	
+						{user.firstName + " " + user.lastName || "N/A"}
 					</Typography>
 				</MenuItem>
+
 				<MenuItem className="flex items-center gap-2"
 					onClick={() => setOpenProfileDialog(true)}	
 				>
@@ -72,6 +76,7 @@ export function ProfileMenu() {
 						Edit Profile
 					</Typography>
 				</MenuItem>
+
 				{(!user.googleId && !user.facebookId) && (
 					<MenuItem className="flex items-center gap-2"
 						onClick={() => setOpenPassDialog(true)}	
@@ -96,7 +101,8 @@ export function ProfileMenu() {
 						</Typography>
 					</MenuItem>
 				)}
-				<hr className="my-2 border-blue-gray-50" />
+				
+                <hr className="my-2 border-blue-gray-50" />
 				<MenuItem className="flex items-center gap-2"
 					onClick={handleSignout}
 				>

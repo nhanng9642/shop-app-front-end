@@ -63,7 +63,7 @@ export function EditProfileDialog({open, setOpen}) {
 						</Typography>
 						<Input type="text" size="lg" {...register('name',{
 							required: 'Please enter name'
-						})} defaultValue={user.name}/>
+						})} defaultValue={user.firstName}/>
 						<Typography className="-mb-2" variant="h6">
 							Email
 						</Typography>
@@ -80,7 +80,7 @@ export function EditProfileDialog({open, setOpen}) {
 							focus:outline-none"
 							onChange={handleChangeImage} ref={imageInput}
 							id="file_input" type="file" />
-						<img src={ preview || user.image}/>
+						<img src={ preview || user.avatar}/>
 					</CardBody>
 					<CardFooter className="pt-0">
 						<Button type="submit" variant="gradient" fullWidth disabled={isUpdate}>

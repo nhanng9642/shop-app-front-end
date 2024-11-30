@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { CategoryService } from "@/services";
+import { updateCategory, createCategory, getCategory } from "@/services";
 import { TextInput } from "@/components";
 
 // eslint-disable-next-line react/prop-types
@@ -22,8 +22,7 @@ export function CategoryForm({ categoryID }) {
     });
 
     const onSubmit = async (data) => {
-        const saveCategory = categoryID ? CategoryService.updateCategory
-                                        : CategoryService.createCategory;
+        const saveCategory = categoryID ? updateCategory : createCategory;
     
         setIsUpdating(true);
         toast.promise(
@@ -42,11 +41,11 @@ export function CategoryForm({ categoryID }) {
 
     useEffect(() => {
         const fetchProduct = async (id) => {
-            const data = await CategoryService.getCategory(id);
-            if (!data)
+            const {data: category} = await getCategory(id);
+            if (!category)
                 navigate("/page-not-found");
-            setCategory(data);
-            reset({ ...data });
+            setCategory(category);
+            reset({ ...category });
         }
 
         if (categoryID) {

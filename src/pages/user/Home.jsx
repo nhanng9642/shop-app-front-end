@@ -1,7 +1,8 @@
-import { useEffect, useState,memo } from "react";
-import banner from '/img/Bookshop.gif';
+import { useEffect, useState, memo } from "react";
 import { Typography } from "@material-tailwind/react";
-import { ProductService, CategoryService } from "@/services";
+
+import banner from '/img/Bookshop.gif';
+import { getCategories, getLowerStockProducts, getProductsWithFilter} from "@/services";
 import { ProductCart, CircularPagination } from "@/components";
 
 const filterPrices = [
@@ -28,53 +29,53 @@ export const Home = memo(() => {
 	const [categoryQuery, setCategoryQuery] = useState(filterCategories[0].value);
 	const [priceQuery, setPriceQuery] = useState(filterPrices[0].value);
 	const [sortPriceQuery, setSortPriceQuery] = useState(filterSortPrice[0].value);
+    
 	const [currentPage,setCurrentPage] = useState(1);
 	const [totalPage, setTotalPage] = useState();
+
 	useEffect(() => {
-		window.scrollTo(0,0);
 		const fetchCategories = async () => {
-			const temp = await CategoryService.getCategories();
-			temp.forEach(item => {
+			const { data: categories} = await getCategories();
+
+			categories.forEach(item => {
 				filterCategories.push({
 					name: item.name,
-					value: `categoryID=${item._id}`
+					value: `categoryID=${item.id}`
 				})
 			})
-			setCategories(temp);
+			setCategories(categories);
 		}
+
 		const fetchTopLowerStock = async() => {
-			const res = await ProductService.getLowerStockProducts('limit=4');
-			setTopLowerStock(res.data);
+			const { data: products} = await getLowerStockProducts(4);
+			setTopLowerStock(products);
 		}
+
 		fetchCategories();
 		fetchTopLowerStock();	
-		return () => {
-			filterCategories.splice(1);
-		}
 	},[]);
+
 	useEffect(() => {
 		const fetchProduct = async () => {
-			const temp = await ProductService
-				.getProductsWithFilter(`${categoryQuery}&${priceQuery}&${sortPriceQuery}&page=${currentPage}&limit=${limitProduct}`);
-			setBooks(temp.data);
-			setTotalPage(temp.totalPages);
+			const {data: products, pagination} = await getProductsWithFilter(`${categoryQuery}&${priceQuery}&${sortPriceQuery}&page=${currentPage}&limit=${limitProduct}`);
+			setBooks(products);
+			setTotalPage(pagination.totalPages);
 		}
 		fetchProduct();
-	},[categoryQuery, priceQuery,sortPriceQuery,currentPage]);
+	}, [categoryQuery, priceQuery, sortPriceQuery, currentPage]);
+
 	return (
 		<main className="flex-grow-1 overflow-hidden">
 			<div className="flex flex-col justify-center items-center bg-white">
 				<img className="w-[100%] max-w-[480px]" src={banner}/>
 				<div className="flex justify-center items-center flex-col max-w-[600px]">
-					<Typography
-						as="h2"	
+					<Typography variant="h2"
 						className="text-center text-3xl md:text-6xl font-bold mb-2"
 					>
 						Discover Your Next Favorite Book Here.
 					</Typography>	
-					<Typography
-						as="p"
-						className="text-center text-sm md:text-2xl mb-4 text-[#455A64] font"
+					<Typography variant="h6"
+						className="text-center text-sm md:text-2xl mb-4 text-[#455A64] font p"
 					>
 						Explore our curated collection of new and popular books to find your next literary adventure.
 					</Typography>
@@ -88,7 +89,7 @@ export const Home = memo(() => {
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
 					{topLowerStock.map(item => (
 						<ProductCart
-							key={`topLowerStock-${item._id}`}
+							key={`topLowerStock-${item.id}`}
 							book={item}
 						/>
 					))}
@@ -147,7 +148,7 @@ export const Home = memo(() => {
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
 					{books.map(item => (
 						<ProductCart
-							key={`productItem-${item._id}`}
+							key={`productItem-${item.id}`}
 							book={item}
 						/>
 					))}

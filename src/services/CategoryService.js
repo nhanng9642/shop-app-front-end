@@ -1,81 +1,18 @@
 import { API_URL } from "./config";
+import { fetchWithToken } from "./utils";
 
 const URL = API_URL + '/category';
 
-export const CategoryService = {
-    getCategories: async (page, limit) => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${URL}?page=${page}&size=${limit}`, {
-            method: 'GET', 
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await res.json();
-        return data;
-    },
+export const getCategories = (page, limit) =>
+    fetchWithToken(`${URL}?page=${page}&limit=${limit}`, 'GET');
 
-    getCategory: async (id) => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${URL}/${id}`, {
-            method: 'GET', 
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await res.json();
-        return data.data;
-    },
+export const getCategory = (id) => fetchWithToken(`${URL}/${id}`, 'GET');
 
-    createCategory: async (category) => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(URL, {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(category),
-        });
-        const data = await res.json();
-        if (data.success === false)
-            throw new Error(data.message);
-        
-        return data;
-    },
+export const createCategory = (category) => 
+    fetchWithToken(URL, 'POST', category);
 
-    updateCategory: async (category) => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${URL}/${category.id}`, {
-            method: 'PUT', 
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(category),
-        });
-        const data = await res.json();
-        if (data.success === false)
-            throw new Error(data.message);
-        return data;
-    },
+export const updateCategory = (category) => 
+    fetchWithToken(`${URL}/${category.id}`, 'PUT', category);
 
-    deleteCategory: async (id) => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${URL}/${id}`, {
-            method: 'DELETE', 
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        
-        const data = await res.json();
-        if (data.success === false)
-            throw new Error(data.message);
-
-        return data;
-    },
-}
+export const deleteCategory = async (id) =>
+    fetchWithToken(`${URL}/${id}`, 'DELETE');

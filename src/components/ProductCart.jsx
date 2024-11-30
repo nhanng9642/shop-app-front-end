@@ -8,32 +8,35 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { cartService } from "@/services";
+
+import { addCartItem } from "@/services";
 import { useUserContext } from "@/context/user";
 
 export const ProductCart = ({book}) => {
 	const {setCart} = useUserContext();
 	return (
 		<Card className="max-w-[300px] overflow-hidden rounded-none">
-			<Link to={`product-views/${book._id}`}>
+			<Link to={`product-views/${book.id}`}>
 				<CardHeader
 					floated={false}
 					shadow={false}
 					color="transparent"
 					className="m-0 rounded-none p-2 hover:bg-[#f1f5f9] cursor-pointer"
 				>
-					<img src={book.image}
+					<img src={book.bookImage} alt={book.title}
 						className="object-contain h-[300px] mx-auto my-auto"/>
 				</CardHeader>
 			</Link>	
+
 			<CardBody className="grow opacity-85 bg-[#ccc]">
-				<Typography variant="p" color="blue-gray" className="md:text-xl text-center">
-					{book.name}	
+				<Typography variant="h6" color="blue-gray" className="md:text-xl text-center">
+					{book.title || "N / A"}	
 				</Typography>
-				<Typography variant="p" color="red" className="mt-3 md:text-xl font-normal text-center">
-					Price: {book.price}
+				<Typography variant="h6" color="red" className="mt-3 md:text-xl font-normal text-center">
+					Price: {book.price || "N / A"}
 				</Typography>
 			</CardBody>
+
 			<CardFooter className="flex justify-between p-2 opacity-85 bg-[#ccc]">
 				<Button
 					size="lg"
@@ -43,7 +46,7 @@ export const ProductCart = ({book}) => {
 					fullWidth={true}
 					onClick={() => {
 						const addData = async() => {
-							const rs = await cartService.addCartItem({productID:book._id})
+							const rs = await addCartItem({bookId: book.id, quantity: 1});
 							setCart(rs.data);
 						}
 						addData();

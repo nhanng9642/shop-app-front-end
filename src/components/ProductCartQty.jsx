@@ -9,46 +9,48 @@ import {
 	Button,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { useUserContext } from "@/context/user";
-import { cartService } from "@/services";
+import { updateCartItem, deleteCartItem } from "@/services";
 
-export const ProductCartQty = ({product, quantity}) => {
-	const {cart, setCart} = useUserContext(); 
-	return (
-		<Card className="max-w-[300px] overflow-hidden rounded-none">
-			<Link to={`/user/product-views/${product._id}`}>
+export const ProductCartQty = ({item, updateCart}) => {
+    const {id: cartId, book, quantity} = item;
+
+    const handleDecreaseBtn = () => {
+        if (quantity > 0)
+            updateCart(cartId, quantity - 1);
+    }
+
+    const handleIncreaseBtn = () => {
+        updateCart(cartId, quantity + 1);
+    }
+
+    return (
+		book && <Card className="max-w-[300px] overflow-hidden rounded-none">
+			<Link to={`/user/product-views/${book.id}`}>
 				<CardHeader
-					onClick={() => {
-
-					}}
 					floated={false}
 					color="transparent"
 					className="m-0 rounded-none p-2 hover:bg-[#f1f5f9] cursor-pointer"
 				>
-					<img src={product.image}
+					<img src={book.bookImage}
 						className="object-contain h-[300px] mx-auto my-auto"/>
 				</CardHeader>
 			</Link>	
+
 			<CardBody className="grow opacity-85 flex flex-row justify-between">
-				<Typography variant="p" color="blue-gray" className="md:text-xl text-center">
-					{product.name}	
+				<Typography variant="paragraph" 
+                            color="blue-gray" 
+                            className="md:text-xl text-center">
+					{book.title}	
 				</Typography>
-				<Typography variant="p" color="red" className="md:text-xl font-normal text-center">
-					{product.price}
+				<Typography variant="paragraph" color="red" className="md:text-xl font-normal text-center">
+					{book.price}
 				</Typography>
 			</CardBody>
+
 			<CardFooter className="flex flex-row flex-wrap items-center justify-between p-2 opacity-85">
 				<div className="grow flex flex-row justify-between items-center mb-1 mx-1">
 					<Button className="bg-white text-black"
-						onClick={() => {
-							const decreaseQty = async() => {
-								const rs = await cartService.updateCartItem({id: product._id, quantity: quantity - 1})
-								setCart(rs.data);
-							};
-							if(quantity > 1){
-								decreaseQty();
-							}
-						}}
+						onClick={handleDecreaseBtn}
 					>
 						-
 					</Button>	
@@ -56,25 +58,17 @@ export const ProductCartQty = ({product, quantity}) => {
 						<Typography>&nbsp;{quantity}&nbsp;</Typography>
 					</div>
 					<Button className="bg-white text-black"
-						onClick={() => {
-							const increaseQty = async() => {
-								const rs = await cartService.updateCartItem({id: product._id, quantity: quantity + 1})
-								setCart(rs.data);
-							};
-							if(quantity < product.inventory){
-								increaseQty();
-							}
-						}}
+						onClick={handleIncreaseBtn}
 					>
 						+
 					</Button>	
 				</div>	
 				<Button className="grow text-white bg-[#f50057] text-center text-sm h-[40px]"
 					onClick={() => {
-						cartService.deleteCartItem(product._id)
+						deleteCartItem(book.id)
 							.then(res => {
 								if(res.status == 204){
-									setCart(cart.filter(item => item.productID != product._id));
+									//setCart(cart.filter(item => item.bookId != product.id));
 								}
 							});
 					}}

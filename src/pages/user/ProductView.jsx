@@ -1,22 +1,23 @@
 import { useState, useEffect} from "react";
 import { useParams, Link } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
-import { ProductService } from "@/services";
+import { getProduct, getProductsWithFilter } from "@/services";
 
 export const ProductView = () => {
 	const {id} = useParams();
 	const [product, setProduct] = useState({image:''});
 	const [similarProducts, setSimilarProducts] = useState([]);
-	useEffect(() => {
+	
+    useEffect(() => {
 		window.scrollTo(0,0);
 		const fetchData = async () => {
-			const temp1 = await ProductService.getProduct(id);
+			const temp1 = await getProduct(id);
 			setProduct(temp1);
 			
-			const temp2 = await ProductService.getProductsWithFilter(`categoryID=${temp1.categoryID._id}&limit=5`)	
+			const temp2 = await getProductsWithFilter(`categoryID=${temp1.categoryID._id}&limit=5`)	
 			setSimilarProducts(temp2.data);
 		}
-		if(id !== product._id){
+		if(id !== product.id){
 			fetchData();
 		}
 	})
@@ -30,7 +31,7 @@ export const ProductView = () => {
 			</div>
 			<div className="p-6 grow">
 				<h4 className="block mb-2 font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-					{product.name}
+					{product.title}
 				</h4>
 				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Author: {product.author}
@@ -39,7 +40,7 @@ export const ProductView = () => {
 					Description: {product.description}
 				</p>
 				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-					Inventory: {product.inventory}
+					Inventory: {product.quantityAvailable}
 				</p>
 				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Inventory: <b>{product.price}</b>
@@ -50,9 +51,10 @@ export const ProductView = () => {
 				<p className="block mb-2 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
 					Similar product:	
 				</p>
-				<div className="mb-8 grid grid-cols-5 gap-4">
+				
+                <div className="mb-8 grid grid-cols-5 gap-4">
 					{similarProducts.map(book => (
-						<Link key={`similarItem-${book._id}`} to={`/user/product-views/${book._id}`}>
+						<Link key={`similarItem-${book.id}`} to={`/user/product-views/${book.id}`}>
 							<div className="flex flex-col justify-center cursor-pointer">
 								<img
 									src={book.image}
@@ -62,6 +64,7 @@ export const ProductView = () => {
 						</Link>
 					))}
 				</div>
+
 				<Link to="/">
 					<button
 						className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"

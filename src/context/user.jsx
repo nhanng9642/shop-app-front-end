@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { cartService } from '../services/CartService';
+import { getCartItems } from '@/services';
 
 export const UserContext = createContext(); 
 
@@ -8,14 +8,14 @@ export const UserContextProvider = ({children}) => {
 	const [cart, setCart] = useState([]);
 	useEffect(() => {
 		const fetchCart = async () => {
-			let temp = await cartService.getCartItems();
-			temp = temp.data.map(item => ({...item, productID:item.productID._id}))
-			setCart(temp);
+			const { data: cart }  = await getCartItems();
+			setCart(cart);
 		}
 		fetchCart();
 	},[]);
+
 	return (
-		<UserContext.Provider value={{cart,setCart}}>
+		<UserContext.Provider value={{cart, setCart}}>
 			{children}
 		</UserContext.Provider>
 	)	

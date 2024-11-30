@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { CategoryService, ProductService } from "@/services";
+import { getCategories, updateProduct, addProduct, getProduct  } from "@/services";
 import { ImageInput, TextInput } from "@/components";
 
 // eslint-disable-next-line react/prop-types
@@ -29,7 +29,6 @@ export function ProductForm({ productId }) {
     const onSubmit = async (data) => {
         data.bookImage = image;
         
-        const { updateProduct, addProduct } = ProductService;
         const saveData = productId ? updateProduct : addProduct;
             
         setIsUpdate(true);
@@ -49,13 +48,13 @@ export function ProductForm({ productId }) {
     //Fetch product if edit page
     useEffect(() => {
         const fetchProduct = async (productId) => {
-            const data = await ProductService.getProduct(productId);
-            if (!data)
+            const { data: product } = await getProduct(productId);
+            if (!product)
                 navigate("/page-not-found");
 
-            data.categoryId = String(data.category.id);
-            setProduct(data);
-            reset(data);
+            product.categoryId = String(product.category.id);
+            setProduct(product);
+            reset(product);
         }
 
         if (productId) {
@@ -66,7 +65,7 @@ export function ProductForm({ productId }) {
     //Fetch categories
     useEffect(() => {
         const fetchCategories = async () => {
-            const { data } = await CategoryService.getCategories();
+            const { data } = await getCategories();
             data.forEach((category) => {
                 category.id = String(category.id);
                 category.name = category.categoryName;

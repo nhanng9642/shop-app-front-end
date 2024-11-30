@@ -1,5 +1,5 @@
 import { Table} from '@/components'
-import { ProductService } from '@/services';
+import { getProducts, deleteProduct } from '@/services';
 
 export function Product() {
     const TABLE_HEAD = ["#", "Book", "Author", "Inventory", 
@@ -8,7 +8,6 @@ export function Product() {
     const properties = ["id", "title", "author", "quantityAvailable", 
         "price", "category.categoryName", "description"];
 
-    const { getProducts, deleteProduct } = ProductService;
     return (
         <Table
             name="Product"

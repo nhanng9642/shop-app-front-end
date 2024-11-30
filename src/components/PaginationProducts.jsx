@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { Link, useSearchParams } from "react-router-dom";
 
-import { ProductService } from "@/services";
+import { getProducts, deleteProduct } from "@/services";
 import { Action, MyCardFooter } from '@/components'
 const TABLE_HEAD = ["Book", "Author", "Inventory", "Price", "Genre", "Description", "Actions"];
 
@@ -33,7 +33,7 @@ export function PaginationProducts() {
     
     useEffect(() => {
         const fetchTableRows = async () => {
-            const {pagination, data} = await ProductService.getProducts(page - 1, size);
+            const {pagination, data} = await getProducts(page - 1, size);
             const {totalPages, pageSize, currentPage} = pagination;
 
             if (page > pagination.totalPages){
@@ -177,7 +177,7 @@ export function PaginationProducts() {
                                             <Action route={`/admin/product/`}
                                                 _id={id}
                                                 manualRerender={manualRerender}
-                                                deleteRow={ProductService.deleteProduct}
+                                                deleteRow={deleteProduct}
                                             />
                                         </td>
                                     </tr>

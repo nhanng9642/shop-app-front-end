@@ -10,9 +10,10 @@ import {
     MenuList,
     MenuItem,
 } from "@material-tailwind/react";
-import {ShoppingCartIcon,MagnifyingGlassIcon} from "@heroicons/react/24/solid";
-import {useNavigate,Link} from "react-router-dom";
-import { ProductService } from "@/services";
+import { ShoppingCartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { useNavigate, Link } from "react-router-dom";
+
+import { getProductsWithFilter } from "@/services";
 import { useUserContext } from "@/context/user";
 import { ProfileMenu } from "@/components";
 
@@ -21,10 +22,11 @@ export const HeaderUser = () => {
     const [searchString, setSearchString] = useState('');
     const [searchResult, setSearchResult] = useState([]);
 	const {cart} = useUserContext();
+
     useEffect(() => {
 		const fetchSearchProduct = async () => {
 			if(searchString.length !== 0){
-				const data = await ProductService.getProductsWithFilter(`search=${searchString}&limit=10`);
+				const data = await getProductsWithFilter(`search=${searchString}&limit=10`);
 				setSearchResult(data.data);
 			}
 			else {
@@ -33,6 +35,7 @@ export const HeaderUser = () => {
 		};
 		fetchSearchProduct();
     },[searchString]);
+    
     return (
         <Navbar className="sticky top-0 z-10 bg-[#263238] bg-opacity-100 h-max max-w-full rounded-none border-none px-8 py-3">
             <div className="flex items-center justify-between text-blue-gray-900">
