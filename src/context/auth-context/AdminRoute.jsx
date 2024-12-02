@@ -11,9 +11,5 @@ export const AdminRoute = ({ children }) => {
         )
     }
 
-    return (
-        <>
-            {children}
-        </>
-    )
+    return children;
 }

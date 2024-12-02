@@ -9,18 +9,17 @@ import {
 	Button,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { updateCartItem, deleteCartItem } from "@/services";
 
 export const ProductCartQty = ({item, updateCart}) => {
-    const {id: cartId, book, quantity} = item;
+    const {book, quantity} = item;
 
     const handleDecreaseBtn = () => {
         if (quantity > 0)
-            updateCart(cartId, quantity - 1);
+            updateCart(book, quantity - 1);
     }
 
     const handleIncreaseBtn = () => {
-        updateCart(cartId, quantity + 1);
+        updateCart(book, quantity + 1);
     }
 
     return (
@@ -64,14 +63,7 @@ export const ProductCartQty = ({item, updateCart}) => {
 					</Button>	
 				</div>	
 				<Button className="grow text-white bg-[#f50057] text-center text-sm h-[40px]"
-					onClick={() => {
-						deleteCartItem(book.id)
-							.then(res => {
-								if(res.status == 204){
-									//setCart(cart.filter(item => item.bookId != product.id));
-								}
-							});
-					}}
+					onClick={() => updateCart(book, 0)}
 				>
 					Remove
 				</Button>

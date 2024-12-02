@@ -5,28 +5,26 @@ import { getProduct, getProductsWithFilter } from "@/services";
 
 export const ProductView = () => {
 	const {id} = useParams();
-	const [product, setProduct] = useState({image:''});
+	const [product, setProduct] = useState({bookImage: ''});
 	const [similarProducts, setSimilarProducts] = useState([]);
 	
     useEffect(() => {
-		window.scrollTo(0,0);
 		const fetchData = async () => {
-			const temp1 = await getProduct(id);
-			setProduct(temp1);
+			const { data: product} = await getProduct(id);
+			setProduct(product);
 			
-			const temp2 = await getProductsWithFilter(`categoryID=${temp1.categoryID._id}&limit=5`)	
-			setSimilarProducts(temp2.data);
+			const {data: similarProducts} = await 
+                getProductsWithFilter(`category.id:${product.category.id}`, 5)	
+			setSimilarProducts(similarProducts);
 		}
-		if(id !== product.id){
-			fetchData();
-		}
-	})
+        fetchData();
+	}, [id]);
 	
 	return (
 		<div className="relative flex flex-wrap md:flex-nowrap justify-center bg-clip-border rounded-xl bg-white text-gray-700 shadow-md w-full max-w-[100%] flex-row p-8">
 			<div className="relative w-1/5 min-w-[300px] m-0 overflow-hidden text-gray-700 bg-white rounded-r-none bg-clip-border rounded-xl shrink-0">
 				<img
-				src={product.image}
+				src={product.bookImage}
 				alt="card-image" className="object-contain w-full h-full" />
 			</div>
 			<div className="p-6 grow">
@@ -57,15 +55,15 @@ export const ProductView = () => {
 						<Link key={`similarItem-${book.id}`} to={`/user/product-views/${book.id}`}>
 							<div className="flex flex-col justify-center cursor-pointer">
 								<img
-									src={book.image}
+									src={book.bookImage}
 									className="object-contain object-center object-contain h-20 rounded-lg cursor-pointer" alt="gallery-image" />
-								<Typography className="text-xs text-center">{book.name}</Typography>
+								<Typography className="text-xs text-center">{book.title || "N / A"}</Typography>
 							</div>
 						</Link>
 					))}
 				</div>
 
-				<Link to="/">
+				<Link to="/user">
 					<button
 						className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
 						type="button">

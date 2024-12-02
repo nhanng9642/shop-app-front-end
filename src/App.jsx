@@ -8,7 +8,7 @@ import NotFound from "./pages/status/NotFound";
 import { Toaster } from "react-hot-toast";
 import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
-import { UserContextProvider } from "./context/user";
+import { CartProvider } from "./context/cart-context";
 function App() {
   return (
     <>
@@ -43,9 +43,9 @@ function App() {
 
         <Route path="/user/*" element={
           <AuthRoute>
-            <UserContextProvider>
+            <CartProvider>
               <User />
-            </UserContextProvider>
+            </CartProvider>
           </AuthRoute>
         } />
 

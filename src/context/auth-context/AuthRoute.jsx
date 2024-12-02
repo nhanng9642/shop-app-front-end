@@ -15,9 +15,6 @@ export const AuthRoute = ({ children }) => {
         return <Navigate to="/auth/sign-in" replace/>
     }
 
-    return (
-        <>
-            {children}
-        </>
-    )
+   return children;
+    
 }

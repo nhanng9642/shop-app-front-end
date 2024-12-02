@@ -3,7 +3,7 @@ import { fetchWithToken } from "./utils";
 
 const URL = API_URL + '/category';
 
-export const getCategories = (page, limit) =>
+export const getCategories = (page = 0, limit = 15) =>
     fetchWithToken(`${URL}?page=${page}&limit=${limit}`, 'GET');
 
 export const getCategory = (id) => fetchWithToken(`${URL}/${id}`, 'GET');

@@ -3,37 +3,17 @@ import { Link } from "react-router-dom"
 import { toast } from "react-hot-toast"
 
 import { Typography,Button } from "@material-tailwind/react";
-import { getCartItems, deleteAllCartItem, addOrder} from "@/services";
+import { addOrder} from "@/services";
 import { ProductCartQty } from "@/components";
+import { useCartContext } from "@/context/cart-context";
 
 export const Cart = () => {
-	const [cartItems, setCartItems] = useState([]);
-    
+	const { cartItems, updateCart, emptyCart } = useCartContext();  
     const [total, setTotal] = useState([]);
-
-    const updateCart = (cartId, quantity) => {
-        const newCart = cartItems.map(item => {
-            if (item?.id === cartId && quantity == 0) return;
-            if (item?.id === cartId) return {...item, quantity};
-            return {...item};
-        }).filter(item => item)
-
-        if (quantity == 0) 
-            console.log(newCart);
-        setCartItems(newCart);
-    }
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const { data } = await getCartItems();
-			setCartItems(data);
-		}
-		fetchData();
-	}, []);
 	
     useEffect( () => {
         const totalPrice = cartItems.reduce((price, item) =>
-             price + item?.book?.price * item.quantity, 0);
+            price + item?.book?.price * item.quantity, 0);
 
         setTotal(totalPrice.toFixed(2));
     }, [cartItems]);
@@ -45,7 +25,10 @@ export const Cart = () => {
             addOrder({orderDetails: cartItems, shippingAddress}),
             {
                 loading: 'Processing your order...',
-                success: res => res.message,
+                success: res => { 
+                    emptyCart();
+                    return res.message
+                },
                 error: err => err.message
             }
         )		
@@ -84,14 +67,7 @@ export const Cart = () => {
 				<div className="grid grid-cols-2 gap-4">
 					<div className="flex flex-row flex-wrap justify-between items-center">
 						<Button className="text-white text-base bg-[#F50057] w-[160px] mb-1 mr-5"
-							onClick={() => {
-								deleteAllCartItem()
-									.then(res => {
-										if(res.status == 204){
-											setCartItems([]);
-										}
-									})
-							}}
+							onClick={emptyCart}
 						>
 							Empty Cart
 						</Button>

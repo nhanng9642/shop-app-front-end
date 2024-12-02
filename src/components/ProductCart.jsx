@@ -9,11 +9,11 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
-import { addCartItem } from "@/services";
-import { useUserContext } from "@/context/user";
+import { useCartContext } from "@/context/cart-context";
 
 export const ProductCart = ({book}) => {
-	const {setCart} = useUserContext();
+    const { updateCart } = useCartContext();
+
 	return (
 		<Card className="max-w-[300px] overflow-hidden rounded-none">
 			<Link to={`product-views/${book.id}`}>
@@ -44,12 +44,9 @@ export const ProductCart = ({book}) => {
 					className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100 bg-[#263238] text-white"
 					ripple={false}
 					fullWidth={true}
-					onClick={() => {
-						const addData = async() => {
-							const rs = await addCartItem({bookId: book.id, quantity: 1});
-							setCart(rs.data);
-						}
-						addData();
+					
+                    onClick={() => {
+                        updateCart(book);
 					}} 
 				>
 					<b>ADD TO CART</b> 

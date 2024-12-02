@@ -22,10 +22,6 @@ export function GuestRoute({ children }) {
         )
     }
 
-    return (
-        <>
-            {children}
-        </>
-    )
+    return children;
 
 }

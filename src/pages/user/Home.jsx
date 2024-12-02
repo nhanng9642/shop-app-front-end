@@ -14,19 +14,19 @@ const filterPrices = [
 	{name:'Over 500.000', value:'price[gt]=500000'},
 ]
 
-const filterCategories = [{name: 'All', value:''}];
 const filterSortPrice = [
 	{name: 'Ascending', value: 'sort=price'},
 	{name: 'Descending', value: 'sort=-price'},
 ];
-const limitProduct = 8;
+
+const sizeProduct = 8;
 
 // eslint-disable-next-line react/display-name
 export const Home = memo(() => {
-	const [, setCategories] = useState([]);
 	const [books, setBooks] = useState([]);
 	const [topLowerStock, setTopLowerStock] = useState([]);
-	const [categoryQuery, setCategoryQuery] = useState(filterCategories[0].value);
+	
+    const [categories, setCategories] = useState([]);
 	const [priceQuery, setPriceQuery] = useState(filterPrices[0].value);
 	const [sortPriceQuery, setSortPriceQuery] = useState(filterSortPrice[0].value);
     
@@ -36,14 +36,7 @@ export const Home = memo(() => {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			const { data: categories} = await getCategories();
-
-			categories.forEach(item => {
-				filterCategories.push({
-					name: item.name,
-					value: `categoryID=${item.id}`
-				})
-			})
-			setCategories(categories);
+			setCategories([{id: '', categoryName: 'All'}, ...categories, ]);
 		}
 
 		const fetchTopLowerStock = async() => {
@@ -52,17 +45,18 @@ export const Home = memo(() => {
 		}
 
 		fetchCategories();
-		fetchTopLowerStock();	
+		fetchTopLowerStock();
 	},[]);
 
 	useEffect(() => {
 		const fetchProduct = async () => {
-			const {data: products, pagination} = await getProductsWithFilter(`${categoryQuery}&${priceQuery}&${sortPriceQuery}&page=${currentPage}&limit=${limitProduct}`);
+			const {data: products, pagination} = await getProductsWithFilter(
+                `${priceQuery}&${sortPriceQuery}&page=${currentPage}&size=${sizeProduct}`);
 			setBooks(products);
 			setTotalPage(pagination.totalPages);
 		}
 		fetchProduct();
-	}, [categoryQuery, priceQuery, sortPriceQuery, currentPage]);
+	}, [priceQuery, sortPriceQuery, currentPage]);
 
 	return (
 		<main className="flex-grow-1 overflow-hidden">
@@ -106,10 +100,10 @@ export const Home = memo(() => {
 				<div className="flex flex-row flex-wrap justify-center items-center my-3">
 					<div className="relative h-10 w-72 min-w-[120px] mb-2 mx-2">
 						<select
-							onChange={(e) => {setCategoryQuery(e.target.value);setCurrentPage(1)}} id="selectFilterCategory"
+							onChange={(e) => {setCategories(e.target.value);setCurrentPage(1)}} id="selectFilterCategory"
 							className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50">
-							{filterCategories.map((item, i) => (
-								<option key={`filterCategoryItem-${i}`} value={item.value}>{item.name}</option>
+							{categories.map((category, i) => (
+								<option key={`filterCategoryItem-${i}`} value={category.id}>{category.categoryName}</option>
 							))}
 
 						</select>
@@ -153,7 +147,10 @@ export const Home = memo(() => {
 						/>
 					))}
 				</div>
-				<CircularPagination currentPage={currentPage} totalPage={totalPage} setCurrentPage={setCurrentPage}/> 
+				
+                <CircularPagination currentPage={currentPage} 
+                                    totalPage={totalPage} 
+                                    setCurrentPage={setCurrentPage}/> 
 			</div>
 		</main>
 	);

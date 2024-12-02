@@ -13,8 +13,8 @@ export const getCartItems = async () => fetchWithToken(`${URL}/cart`);
 
 export const addCartItem = async (data) => fetchWithToken(`${URL}/cart`, 'POST', data);
 
-export const updateCartItem = async (data) => fetchWithToken(`${URL}/order/${data.id}`, 'PUT', data);
+export const updateCartItem = async (data) => fetchWithToken(`${URL}/cart/${data.bookId}`, 'PUT', data);
 
-export const deleteCartItem = async (data) => fetchWithToken(`${URL}/order/${data.id}`, 'DELETE');
+export const deleteCartItem = async (data) => fetchWithToken(`${URL}/cart/${data.bookId}`, 'DELETE');
 
-export const deleteAllCartItem = async () => fetchWithToken(`${URL}/order`, 'DELETE');
+export const deleteAllCartItem = async () => fetchWithToken(`${URL}/cart`, 'DELETE');

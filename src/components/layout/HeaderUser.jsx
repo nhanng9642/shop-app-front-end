@@ -1,4 +1,4 @@
-import {useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
     Navbar,
     Typography,
@@ -14,20 +14,20 @@ import { ShoppingCartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid
 import { useNavigate, Link } from "react-router-dom";
 
 import { getProductsWithFilter } from "@/services";
-import { useUserContext } from "@/context/user";
 import { ProfileMenu } from "@/components";
+import { useCartContext } from "@/context/cart-context";
 
 export const HeaderUser = () => {
     const navigate = useNavigate();
     const [searchString, setSearchString] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-	const {cart} = useUserContext();
+	const { cartItems} = useCartContext();
 
     useEffect(() => {
 		const fetchSearchProduct = async () => {
 			if(searchString.length !== 0){
-				const data = await getProductsWithFilter(`search=${searchString}&limit=10`);
-				setSearchResult(data.data);
+				const {data: books} = await getProductsWithFilter(`title~'${searchString}'`);
+				setSearchResult(books);
 			}
 			else {
 				setSearchResult([]);
@@ -39,7 +39,7 @@ export const HeaderUser = () => {
     return (
         <Navbar className="sticky top-0 z-10 bg-[#263238] bg-opacity-100 h-max max-w-full rounded-none border-none px-8 py-3">
             <div className="flex items-center justify-between text-blue-gray-900">
-                <Link to="/">
+                <Link to="/user">
                     <Typography
 						as="h5"
 						className="mx-2 cursor-pointer text-2xl py-1.5 font-bold text-white tracking-wider grow"
@@ -70,11 +70,11 @@ export const HeaderUser = () => {
 								/>
 								{searchResult.map(item => (
 								<MenuItem 
-									key={`searchMenuItem-${item._id}`}
-									onClick={() => {navigate(`product-views/${item._id}`)}}
+									key={`searchMenuItem-${item.id}`}
+									onClick={() => {navigate(`product-views/${item.id}`)}}
 									>
-									<Link to={`product-views/${item._id}`}>
-										{item.name}
+									<Link to={`product-views/${item.id}`}>
+										{item.title}
 									</Link>
 								</MenuItem>
 								))}
@@ -82,7 +82,7 @@ export const HeaderUser = () => {
 						</Menu>
 					</div>
 					<div className="mx-2">
-						<Badge content={cart.length}>
+						<Badge content={cartItems.length}>
 							<Link to="cart">
 								<IconButton className="text-white hover:text-blue-500 bg-transparent">
 									<ShoppingCartIcon className="w-8 h-8"/>

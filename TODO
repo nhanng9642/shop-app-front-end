@@ -1,4 +1,4 @@
-Product view not work
-Home: cart context update (same book), remove, order
-Btn home not Link
+Product view improve UI / UX, refactoring
+Home category ==> filter --> search page (price (asc, desc: check box)), input, register
+Cart --> select cart
 Edit profile, change pw

@@ -3,11 +3,11 @@ import { fetchFormData, fetchWithToken } from './utils';
 
 const URL = API_URL + '/book';
 
-export const getProducts = (page = 1, limit = 7) => 
-    fetchWithToken(`${URL}?page=${page}&size=${limit}`)
+export const getProducts = (page = 1, size = 7) => 
+    fetchWithToken(`${URL}?page=${page}&size=${size}`)
 
-export const getProductsWithFilter = (query) => 
-    fetchWithToken(`${URL}?${query}`)
+export const getProductsWithFilter = (query = "", size = 10, page = 0) => 
+    fetchWithToken(`${URL}?size=${size}&page=${page}&filter=${query}`)
 
 export const getLowerStockProducts = (size) => 
     fetchWithToken(`${URL}?size=${size}`)
